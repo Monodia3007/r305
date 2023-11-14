@@ -1,12 +1,29 @@
+/**
+ * @file tp3.c
+ * @brief File operations, including file system information retrieval and directory listing, with fork support.
+ * @author Lilith Camplin
+ * @date 14-11-2023
+ */
+
 #include "tp3.h"
 #include <stdio.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <sys/syslimits.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define NUM_PROCS 10 // number of processes to spawn
 
 /**
- * @file
- * @brief This file contains the documentation for the function afficher_infos.
+ * @brief This function gets the file or directory information and displays it.
+ *
+ * The function uses the stat system call to retrieve the file system information.
+ * The information includes the type of the file (regular file, directory, or symbolic link),
+ * file permissions, user id, group id, file size, and the file path.
+ *
+ * @param chemin The path of the file or directory.
+ * @return Returns 0 if successful; otherwise, it returns -1.
  */
 int afficher_infos(const char *chemin) {
     struct stat infos;
@@ -34,14 +51,13 @@ int afficher_infos(const char *chemin) {
 }
 
 /**
- * @brief Affiche le contenu d'un répertoire donné.
+ * @brief This function opens a directory and lists all files and directories in it.
  *
- * Cette fonction affiche le contenu d'un répertoire donné par le chemin spécifié.
- * Elle affiche uniquement les noms des fichiers et des sous-répertoires présents.
+ * The function opens a directory specified by the path, reads all directory entries,
+ * and gets and displays information for each entry.
  *
- * @param chemin Le chemin du répertoire à afficher.
- *
- * @return Aucune valeur de retour.
+ * @param chemin The path of the directory.
+ * @return Returns 0 if successful; otherwise, it returns -1.
  */
 int afficher_repertoire(const char *chemin) {
     DIR *rep = opendir(chemin);
@@ -66,21 +82,81 @@ int afficher_repertoire(const char *chemin) {
 }
 
 /**
- * @file tp3.c
- * @brief Main function for the application.
+ * @brief This function simulates a long running process.
  *
- * This file contains the main entry point for the application.
- * It parses command line arguments and performs necessary initialization.
+ * The function generates a random sleep time, simulating a long running process.
+ * It prints the PID of the process before and after sleeping.
+ */
+void traiter(void) {
+    srand(getpid());
+    printf("Processus de pid %d, je vais faire un traitement très long!\n", getpid());
+    sleep(rand() % 10);
+    printf("Processus de pid %d, traitement terminé\n", getpid());
+}
+
+/**
+ * @brief This function starts a child process to list a directory.
  *
+ * The function forks a child process to call the function afficher_repertoire.
+ *
+ * @param chemin The path of the directory to list.
+ * @return Returns the PID of the child process if successful; otherwise, it returns -1.
+ */
+int lancer_traitement(const char *chemin) {
+    int pid = fork();
+
+    if (pid == 0) { // This is child process
+        if (afficher_repertoire(chemin) == -1) {
+            perror(chemin);
+            exit(1);
+        }
+        exit(0);
+    }
+    else if (pid > 0) { // This is parent process
+        return pid;
+    }
+    else { // Fork failed
+        perror("fork");
+        return -1;
+    }
+}
+
+/**
+ * @brief The main function.
+ *
+ * The function checks command line arguments for a list of directories.
+ * For each directory, it starts a child process to list the directory.
+ * It waits for all child processes to finish before exiting.
+ *
+ * @param argc The number of arguments.
+ * @param argv The argument vector.
+ * @return Returns 0 if successful; otherwise, it returns 1.
  */
 int main(int argc, char *argv[]) {
-    if (argc == 1) {
-        return afficher_repertoire(".");
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s dir1 [dir2 ... dirN]\n", argv[0]);
+        return 1;
     }
+
+    int *pids = malloc((argc-1) * sizeof(int));
     for (int i = 1; i < argc; i++) {
-        if (afficher_repertoire(argv[i]) == -1) {
+        pids[i-1] = lancer_traitement(argv[i]);
+        if (pids[i-1] == -1) {
+            fprintf(stderr, "Failed to launch process for %s\n", argv[i]);
+            free(pids);
             return 1;
         }
     }
+
+    for (int i = 0; i < argc-1; i++) {
+        if (waitpid(pids[i], NULL, 0) == -1) {
+            perror("waitpid");
+            free(pids);
+            return 1;
+        }
+    }
+
+    free(pids);
+    printf("All child processes finished.\n");
     return 0;
 }
