@@ -86,8 +86,7 @@ int afficher_infos(const char *chemin)
     if (pwd != NULL)
     {
         printf("%s ", pwd->pw_name);
-    }
-    else
+    } else
     {
         printf("%d ", infos.st_uid);
     }
@@ -95,8 +94,7 @@ int afficher_infos(const char *chemin)
     if (grp != NULL)
     {
         printf("%s ", grp->gr_name);
-    }
-    else
+    } else
     {
         printf("%d ", infos.st_gid);
     }
