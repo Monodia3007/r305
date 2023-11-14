@@ -12,6 +12,8 @@
 #include <sys/syslimits.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <grp.h>
+#include <pwd.h>
 
 /**
  * @brief This function gets the file or directory information and displays it.
@@ -51,8 +53,28 @@ int afficher_infos(const char *chemin)
 
     printf("%c ", type);
     printf("%o ", infos.st_mode & ~S_IFMT);
-    printf("%d ", infos.st_uid);
-    printf("%d ", infos.st_gid);
+
+    struct passwd *pwd = getpwuid(infos.st_uid);
+    struct group *grp = getgrgid(infos.st_gid);
+
+    if (pwd != NULL)
+    {
+        printf("%s ", pwd->pw_name);
+    }
+    else
+    {
+        printf("%d ", infos.st_uid);
+    }
+
+    if (grp != NULL)
+    {
+        printf("%s ", grp->gr_name);
+    }
+    else
+    {
+        printf("%d ", infos.st_gid);
+    }
+
     printf("%lld ", (long long) infos.st_size);
     printf("%s\n", chemin);
 
