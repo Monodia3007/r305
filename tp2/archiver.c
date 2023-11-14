@@ -25,19 +25,22 @@
  *
  * @return The size of the file in bytes. In the case of an error, returns -1.
  */
-int file_size(int fd) {
+int file_size(int fd)
+{
     off_t position = lseek(fd, 0, SEEK_CUR);
     off_t size = lseek(fd, 0, SEEK_END);
 
-    if (size == (off_t) -1) {
+    if (size == (off_t) -1)
+    {
         return -1;
     }
 
-    if (lseek(fd, position, SEEK_SET) == (off_t) -1) {
+    if (lseek(fd, position, SEEK_SET) == (off_t) -1)
+    {
         return -1;
     }
 
-    return (int)size;
+    return (int) size;
 }
 
 /**
@@ -49,20 +52,24 @@ int file_size(int fd) {
  *
  * @return The total number of bytes written to the destination file. In the case of error, returns -1.
  */
-int copy(int source, int destination) {
+int copy(int source, int destination)
+{
     char buffer[1024];
     ssize_t bytes_read, bytes_written;
     int total = 0;
 
-    while ((bytes_read = read(source, buffer, sizeof(buffer))) > 0) {
+    while ((bytes_read = read(source, buffer, sizeof(buffer))) > 0)
+    {
         bytes_written = write(destination, buffer, bytes_read);
-        if (bytes_written == -1) {
+        if (bytes_written == -1)
+        {
             return -1;
         }
         total += bytes_written;
     }
 
-    if (bytes_read == -1) {
+    if (bytes_read == -1)
+    {
         return -1;
     }
 
@@ -78,14 +85,17 @@ int copy(int source, int destination) {
  *
  * @return The total number of bytes written to the archive, or -1 in the case of errors.
  */
-int archive_file(int fd_archive, const char *file) {
+int archive_file(int fd_archive, const char *file)
+{
     int fd = open(file, O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1)
+    {
         return -1;
     }
 
     int size = file_size(fd);
-    if (size == -1) {
+    if (size == -1)
+    {
         close(fd);
         return -1;
     }
@@ -116,9 +126,11 @@ int archive_file(int fd_archive, const char *file) {
  *
  * @return The total number of bytes written to the archive, including file headers, or -1 in case of errors.
  */
-int create_archive(const char *archive_f, char **file_list, uint32_t file_count) {
+int create_archive(const char *archive_f, char **file_list, uint32_t file_count)
+{
     int fd = open(archive_f, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd == -1) {
+    if (fd == -1)
+    {
         return -1;
     }
 
@@ -126,9 +138,11 @@ int create_archive(const char *archive_f, char **file_list, uint32_t file_count)
     write(fd, &file_count_le, sizeof(file_count));
 
     int total = sizeof(file_count);
-    for (uint32_t i = 0; i < file_count; i++) {
+    for (uint32_t i = 0; i < file_count; i++)
+    {
         int written = archive_file(fd, file_list[i]);
-        if (written == -1) {
+        if (written == -1)
+        {
             close(fd);
             return -1;
         }
@@ -148,9 +162,11 @@ int create_archive(const char *archive_f, char **file_list, uint32_t file_count)
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
-    if (argc < 3) {
+    if (argc < 3)
+    {
         fprintf(stderr, "Usage : %s <archive_filename> <file1> [file2] ...\n", argv[0]);
         return 1;
     }
@@ -161,7 +177,8 @@ int main(int argc, char *argv[]) {
 
     // Append .arch extension if it's not present
     size_t len = strlen(archive_file);
-    if (len <= 5 || strcmp(archive_file + len - 5, ".arch") != 0) {
+    if (len <= 5 || strcmp(archive_file + len - 5, ".arch") != 0)
+    {
         strncat(archive_file, ".arch", sizeof(archive_file) - len - 1);
     }
 
@@ -170,7 +187,8 @@ int main(int argc, char *argv[]) {
 
     int result = create_archive(archive_file, file_list, file_count);
 
-    if (result == -1) {
+    if (result == -1)
+    {
         perror("An error occurred while creating the archive.");
         return 1;
     }

@@ -25,26 +25,37 @@
  * @param chemin The path of the file or directory.
  * @return Returns 0 if successful; otherwise, it returns -1.
  */
-int afficher_infos(const char *chemin) {
+int afficher_infos(const char *chemin)
+{
     struct stat infos;
-    if (stat(chemin, &infos) == -1) {
+    if (stat(chemin, &infos) == -1)
+    {
         perror(chemin);
         return -1;
     }
 
     char type;
-    switch (infos.st_mode & S_IFMT) {
-        case S_IFREG: type = '-'; break;
-        case S_IFDIR: type = 'd'; break;
-        case S_IFLNK: type = 'l'; break;
-        default: type = '?'; break;
+    switch (infos.st_mode & S_IFMT)
+    {
+        case S_IFREG:
+            type = '-';
+            break;
+        case S_IFDIR:
+            type = 'd';
+            break;
+        case S_IFLNK:
+            type = 'l';
+            break;
+        default:
+            type = '?';
+            break;
     }
 
     printf("%c ", type);
     printf("%o ", infos.st_mode & ~S_IFMT);
     printf("%d ", infos.st_uid);
     printf("%d ", infos.st_gid);
-    printf("%lld ", (long long)infos.st_size);
+    printf("%lld ", (long long) infos.st_size);
     printf("%s\n", chemin);
 
     return 0;
@@ -59,19 +70,23 @@ int afficher_infos(const char *chemin) {
  * @param chemin The path of the directory.
  * @return Returns 0 if successful; otherwise, it returns -1.
  */
-int afficher_repertoire(const char *chemin) {
+int afficher_repertoire(const char *chemin)
+{
     DIR *rep = opendir(chemin);
-    if (rep == NULL) {
+    if (rep == NULL)
+    {
         perror(chemin);
         return -1;
     }
 
     struct dirent *entree;
-    while ((entree = readdir(rep)) != NULL) {
+    while ((entree = readdir(rep)) != NULL)
+    {
         char chemin_fichier[PATH_MAX];
         snprintf(chemin_fichier, PATH_MAX, "%s/%s", chemin, entree->d_name);
 
-        if (afficher_infos(chemin_fichier) == -1) {
+        if (afficher_infos(chemin_fichier) == -1)
+        {
             closedir(rep);
             return -1;
         }
@@ -87,7 +102,8 @@ int afficher_repertoire(const char *chemin) {
  * The function generates a random sleep time, simulating a long running process.
  * It prints the PID of the process before and after sleeping.
  */
-void traiter(void) {
+void traiter(void)
+{
     srand(getpid());
     printf("Processus de pid %d, je vais faire un traitement très long!\n", getpid());
     sleep(rand() % 10);
@@ -102,20 +118,23 @@ void traiter(void) {
  * @param chemin The path of the directory to list.
  * @return Returns the PID of the child process if successful; otherwise, it returns -1.
  */
-int lancer_traitement(const char *chemin) {
+int lancer_traitement(const char *chemin)
+{
     int pid = fork();
 
-    if (pid == 0) { // This is child process
-        if (afficher_repertoire(chemin) == -1) {
+    if (pid == 0)
+    { // This is child process
+        if (afficher_repertoire(chemin) == -1)
+        {
             perror(chemin);
             exit(1);
         }
         exit(0);
-    }
-    else if (pid > 0) { // This is parent process
+    } else if (pid > 0)
+    { // This is parent process
         return pid;
-    }
-    else { // Fork failed
+    } else
+    { // Fork failed
         perror("fork");
         return -1;
     }
@@ -132,24 +151,30 @@ int lancer_traitement(const char *chemin) {
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
         fprintf(stderr, "Usage: %s dir1 [dir2 ... dirN]\n", argv[0]);
         return 1;
     }
 
-    int *pids = malloc((argc-1) * sizeof(int));
-    for (int i = 1; i < argc; i++) {
-        pids[i-1] = lancer_traitement(argv[i]);
-        if (pids[i-1] == -1) {
+    int *pids = malloc((argc - 1) * sizeof(int));
+    for (int i = 1; i < argc; i++)
+    {
+        pids[i - 1] = lancer_traitement(argv[i]);
+        if (pids[i - 1] == -1)
+        {
             fprintf(stderr, "Failed to launch process for %s\n", argv[i]);
             free(pids);
             return 1;
         }
     }
 
-    for (int i = 0; i < argc-1; i++) {
-        if (waitpid(pids[i], NULL, 0) == -1) {
+    for (int i = 0; i < argc - 1; i++)
+    {
+        if (waitpid(pids[i], NULL, 0) == -1)
+        {
             perror("waitpid");
             free(pids);
             return 1;

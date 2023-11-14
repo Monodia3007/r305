@@ -9,7 +9,8 @@ typedef int element_t;
 #define TAILLE_PILE 5
 
 // Une pile de taille fixe
-typedef struct {
+typedef struct
+{
     // un tableau d'éléments
     element_t pile[TAILLE_PILE];
     // l'indice du dernier élément empilé
@@ -21,7 +22,8 @@ typedef struct {
 #define PAS_ALLOCATION 5
 
 // Une pile de taille fixe
-typedef struct {
+typedef struct
+{
     // un pointeur vers un tableau d'éléments
     element_t *pile;
     // l'indice du dernier élément empilé
@@ -32,13 +34,15 @@ typedef struct {
 
 #define TAILLE_FILE 5
 
-typedef struct {
+typedef struct
+{
     element_t file[TAILLE_FILE];
     int head;
     int tail;
 } file_fixe_t;
 
-typedef struct {
+typedef struct
+{
     element_t *file;
     int head;
     int tail;
@@ -101,21 +105,33 @@ void pile_variable_afficher(const pile_variable_t *pile);
 void pile_variable_detruire(pile_variable_t *pile);
 
 void file_fixe_initialiser(file_fixe_t *file);
+
 int file_fixe_est_vide(const file_fixe_t *file);
+
 int file_fixe_enfiler(file_fixe_t *file, element_t element);
+
 int file_fixe_defiler(file_fixe_t *file, element_t *p_element);
+
 void file_fixe_afficher(const file_fixe_t *file);
 
 int file_variable_initialiser(file_variable_t *file);
+
 int file_variable_est_vide(const file_variable_t *file);
+
 int file_variable_enfiler(file_variable_t *file, element_t element);
+
 int file_variable_defiler(file_variable_t *file, element_t *p_element);
+
 void file_variable_afficher(const file_variable_t *file);
+
 void file_variable_detruire(file_variable_t *file);
 
 void test_pile_fixe(void);
+
 void test_pile_variable(void);
+
 void test_file_fixe(void);
+
 void test_file_variable(void);
 
 #endif //R305_QUEUE_AND_STACK_OPERATIONS_H

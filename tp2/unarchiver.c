@@ -26,24 +26,30 @@
  *
  * @return The total number of bytes copied, or -1 in case of errors.
  */
-int copy_content(int source, int destination, int size) {
+int copy_content(int source, int destination, int size)
+{
     char buffer[1024];
     int total = 0;
-    while (size > 0) {
-        int bytes_to_read = ((int)sizeof(buffer) < size) ? (int)sizeof(buffer) : size;
+    while (size > 0)
+    {
+        int bytes_to_read = ((int) sizeof(buffer) < size) ? (int) sizeof(buffer) : size;
         int read_bytes = read(source, buffer, bytes_to_read);
-        if (read_bytes < 0) {
+        if (read_bytes < 0)
+        {
             perror("Read error in copy_content");
             return -1;
-        } else if (read_bytes == 0) {
+        } else if (read_bytes == 0)
+        {
             fprintf(stderr, "EOF encountered in copy_content with %d bytes left to read\n", size);
             return -1;
         }
 
         int written_bytes = 0;
-        while (written_bytes < read_bytes) {
+        while (written_bytes < read_bytes)
+        {
             int result = write(destination, buffer + written_bytes, read_bytes - written_bytes);
-            if (result < 0) {
+            if (result < 0)
+            {
                 perror("Write error in copy_content");
                 return -1;
             }
@@ -63,28 +69,33 @@ int copy_content(int source, int destination, int size) {
  *
  * @return The total number of bytes written to the extracted file, or -1 in case of errors.
  */
-int extract_file(int fd_archive) {
+int extract_file(int fd_archive)
+{
     uint8_t file_name_size;
-    if (read(fd_archive, &file_name_size, sizeof(file_name_size)) != sizeof(file_name_size)) {
+    if (read(fd_archive, &file_name_size, sizeof(file_name_size)) != sizeof(file_name_size))
+    {
         perror("Error reading file name size");
         return -1;
     }
 
     char file_name[file_name_size + 1];
-    if (read(fd_archive, file_name, file_name_size) != file_name_size) {
+    if (read(fd_archive, file_name, file_name_size) != file_name_size)
+    {
         perror("Error reading file name");
         return -1;
     }
     file_name[file_name_size] = '\0';
 
     uint64_t file_size;
-    if (read(fd_archive, &file_size, sizeof(file_size)) != sizeof(file_size)) {
+    if (read(fd_archive, &file_size, sizeof(file_size)) != sizeof(file_size))
+    {
         perror("Error reading file size");
         return -1;
     }
 
     int fd_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-    if (fd_file == -1) {
+    if (fd_file == -1)
+    {
         perror("Error opening file for writing");
         return -1;
     }
@@ -104,20 +115,25 @@ int extract_file(int fd_archive) {
  *
  * @return The number of files extracted from the archive, or -1 in case of errors.
  */
-int extract_archive(const char *archive) {
+int extract_archive(const char *archive)
+{
     int fd = open(archive, O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1)
+    {
         return -1;
     }
 
     uint32_t file_count;
-    if (read(fd, &file_count, sizeof(file_count)) != sizeof(file_count)) {
+    if (read(fd, &file_count, sizeof(file_count)) != sizeof(file_count))
+    {
         close(fd);
         return -1;
     }
 
-    for (uint32_t i = 0; i < file_count; i++) {
-        if (extract_file(fd) == -1) {
+    for (uint32_t i = 0; i < file_count; i++)
+    {
+        if (extract_file(fd) == -1)
+        {
             close(fd);
             return -1;
         }
@@ -137,17 +153,21 @@ int extract_archive(const char *archive) {
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char **argv) {
-    if (argc != 2) {
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
         fprintf(stderr, "Usage: %s [archive file]\n", argv[0]);
         return 1;
     }
 
     int result = extract_archive(argv[1]);
-    if (result == -1) {
+    if (result == -1)
+    {
         perror("Error extracting archive");
         return 1;
-    } else {
+    } else
+    {
         printf("Successfully extracted %d file(s) from the archive.\n", result);
     }
 
