@@ -16,11 +16,35 @@
 #include <pwd.h>
 
 /**
+ * @brief Prints the octal representation of user, group, and other permissions.
+ *
+ * This function receives a `mode_t` that represents the file's mode (permissions and type)
+ * and prints the user, group, and other permissions in octal format.
+ *
+ * The permission values for user/group/other are translated to 4 (read), 2 (write),
+ * and 1(execute). If a permission is not set, then it is represented by the value 0.
+ *
+ * @param mode It's a type mode_t variable that holds the file's mode (permissions and type).
+ *
+ * The function doesn't return a value.
+ */
+void print_octal_permissions(mode_t mode)
+{
+    /* User permissions */
+    printf("%o", ((mode & S_IRUSR) ? 4 : 0) + ((mode & S_IWUSR) ? 2 : 0) + ((mode & S_IXUSR) ? 1 : 0));
+    /* Group permissions */
+    printf("%o", ((mode & S_IRGRP) ? 4 : 0) + ((mode & S_IWGRP) ? 2 : 0) + ((mode & S_IXGRP) ? 1 : 0));
+    /* Other permissions */
+    printf("%o", ((mode & S_IROTH) ? 4 : 0) + ((mode & S_IWOTH) ? 2 : 0) + ((mode & S_IXOTH) ? 1 : 0));
+    putchar(' ');
+}
+
+/**
  * @brief This function gets the file or directory information and displays it.
  *
  * The function uses the stat system call to retrieve the file system information.
  * The information includes the type of the file (regular file, directory, or symbolic link),
- * file permissions, user id, group id, file size, and the file path.
+ * file permissions, user name, group name, file size, and the file path.
  *
  * @param chemin The path of the file or directory.
  * @return Returns 0 if successful; otherwise, it returns -1.
@@ -52,7 +76,9 @@ int afficher_infos(const char *chemin)
     }
 
     printf("%c ", type);
-    printf("%o ", infos.st_mode & ~S_IFMT);
+
+    // Use custom function to print permissions:
+    print_octal_permissions(infos.st_mode);
 
     struct passwd *pwd = getpwuid(infos.st_uid);
     struct group *grp = getgrgid(infos.st_gid);

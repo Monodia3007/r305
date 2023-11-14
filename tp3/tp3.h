@@ -8,6 +8,15 @@
 #ifndef R305_TP3_H
 #define R305_TP3_H
 
+#include <sys/stat.h>
+
+/**
+ * @brief Prototype for function to display file permissions
+ *
+ * @param mode It's a type mode_t variable that holds the file's mode (permissions and type).
+ */
+void print_octal_permissions(mode_t mode);
+
 /**
  * @brief Prototype for function to display file or directory information.
  *
