@@ -13,8 +13,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define NUM_PROCS 10 // number of processes to spawn
-
 /**
  * @brief This function gets the file or directory information and displays it.
  *
