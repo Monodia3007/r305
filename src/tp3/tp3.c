@@ -75,6 +75,7 @@ int afficher_infos(const char *chemin)
             break;
     }
 
+    printf("\x001B[1;95m");
     printf("%c ", type);
 
     // Use custom function to print permissions:
