@@ -32,7 +32,7 @@ int copy(int source, int destination, int size);
  *
  * @return The total number of bytes written to the extracted file, or -1 in case of errors.
  */
-int extract_file(int fd_archive);
+ssize_t extract_file(int fd_archive);
 
 /**
  * @function int extract_archive(const char *archive)
@@ -42,7 +42,7 @@ int extract_file(int fd_archive);
  *
  * @return The number of files extracted from the archive, or -1 in case of errors.
  */
-int extract_archive(const char *archive);
+uint32_t extract_archive(const char *archive);
 
 /**
  * @function int main(int argc, char **argv)
