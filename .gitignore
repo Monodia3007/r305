@@ -2,3 +2,5 @@
 cmake-build-debug/
 cmake-build-default/
 build/
+cmake-build-debug-wsl/
+cmake-build-default-wsl/
