@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     }
 
     uint32_t result = extract_archive(argv[1]);
-    if (result == (uint32_t)-1)
+    if (result == (-1u))
     {
         perror("Error extracting archive");
         return 1;
