@@ -14,5 +14,6 @@ add_executable(
         src/tp3/tp3.h
         src/tp3/tp3.c
         src/main.c
+        src/test/no_ram_for_you.c
         src/test/no_ram_for_you.h
 )

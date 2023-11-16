@@ -12,6 +12,9 @@
 #ifndef R305_ARCHIVER_H
 #define R305_ARCHIVER_H
 
+#include <stdint.h>
+
+
 /**
  * @function int file_size(int fd)
  * @brief Calculates the size of the file represented by the file descriptor.

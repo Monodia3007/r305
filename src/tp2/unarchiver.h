@@ -12,6 +12,9 @@
 #ifndef R305_UNARCHIVER_H
 #define R305_UNARCHIVER_H
 
+#include <stdint.h>
+
+
 /**
  * @brief Copy content from a source file descriptor to a destination file descriptor.
  *
