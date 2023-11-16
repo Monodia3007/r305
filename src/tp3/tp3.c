@@ -147,7 +147,7 @@ int afficher_repertoire(const char *chemin)
  * The function generates a random sleep time, simulating a long running process.
  * It prints the PID of the process before and after sleeping.
  */
-void traiter(void)
+__attribute__((unused)) void traiter(void)
 {
     srand(getpid());
     printf("Processus de pid %d, je vais faire un traitement très long!\n", getpid());
@@ -196,7 +196,7 @@ int lancer_traitement(const char *chemin)
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int main(int argc, char *argv[])
+int run_tp3(int argc, char *argv[])
 {
     if (argc < 2)
     {

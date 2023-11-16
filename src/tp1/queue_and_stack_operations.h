@@ -134,4 +134,6 @@ void test_file_fixe(void);
 
 void test_file_variable(void);
 
+int run_queue_and_stack_operations(void);
+
 #endif //R305_QUEUE_AND_STACK_OPERATIONS_H

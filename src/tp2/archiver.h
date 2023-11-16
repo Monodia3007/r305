@@ -66,6 +66,6 @@ ssize_t create_archive(const char *archive_file, char **file_list, uint32_t file
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char *argv[]);
+int run_archiver(int argc, char *argv[]);
 
 #endif //R305_ARCHIVER_H

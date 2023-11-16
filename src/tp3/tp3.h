@@ -48,6 +48,6 @@ int lancer_traitement(const char *chemin);
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int main(int argc, char *argv[]);
+int run_tp3(int argc, char *argv[]);
 
 #endif //R305_TP3_H

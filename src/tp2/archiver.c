@@ -162,7 +162,7 @@ ssize_t create_archive(const char *archive_f, char **file_list, uint32_t file_co
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char *argv[])
+int run_archiver(int argc, char *argv[])
 {
 
     if (argc < 3)

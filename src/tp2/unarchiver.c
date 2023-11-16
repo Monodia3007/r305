@@ -153,7 +153,7 @@ uint32_t extract_archive(const char *archive)
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char **argv)
+int run_unarchiver(int argc, char **argv)
 {
     if (argc != 2)
     {

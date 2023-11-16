@@ -13,16 +13,23 @@
 #define R305_UNARCHIVER_H
 
 /**
- * @function int copy(int source, int destination, int size)
- * @brief Copies a certain number of bytes from the source file to the destination file.
+ * @brief Copy content from a source file descriptor to a destination file descriptor.
  *
- * @param source The source file descriptor
- * @param destination The destination file descriptor
- * @param size The number of bytes to be copied
+ * This function copies the content from one file descriptor to another. It reads data from the source file descriptor,
+ * and writes that data to the destination file descriptor. The size parameter determines the number of bytes to be
+ * copied. If the size is negative, all data from the source file descriptor until EOF is copied.
  *
- * @return The total number of bytes copied, or -1 in case of errors.
+ * @param source The source file descriptor to read data from.
+ * @param destination The destination file descriptor to write data to.
+ * @param size The number of bytes to be copied. Negative value means copying until EOF.
+ *
+ * @return On success, the total number of bytes copied is returned. On error, -1 is returned, and an error message is
+ * displayed.
+ *
+ * @note The source and destination file descriptors must be opened for reading and writing respectively before being
+ * passed to this function.
  */
-int copy(int source, int destination, int size);
+ssize_t copy_content(int source, int destination, ssize_t size);
 
 /**
  * @function int extract_file(int fd_archive)
@@ -53,6 +60,6 @@ uint32_t extract_archive(const char *archive);
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int main(int argc, char **argv);
+int run_unarchiver(int argc, char **argv);
 
 #endif //R305_UNARCHIVER_H
