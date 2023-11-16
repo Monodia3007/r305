@@ -52,11 +52,11 @@ int file_size(int fd)
  *
  * @return The total number of bytes written to the destination file. In the case of error, returns -1.
  */
-int copy(int source, int destination)
+ssize_t copy(int source, int destination)
 {
     char buffer[1024];
     ssize_t bytes_read, bytes_written;
-    int total = 0;
+    ssize_t total = 0;
 
     while ((bytes_read = read(source, buffer, sizeof(buffer))) > 0)
     {
@@ -85,7 +85,7 @@ int copy(int source, int destination)
  *
  * @return The total number of bytes written to the archive, or -1 in the case of errors.
  */
-int archive_file(int fd_archive, const char *file)
+ssize_t archive_file(int fd_archive, const char *file)
 {
     int fd = open(file, O_RDONLY);
     if (fd == -1)
@@ -107,12 +107,12 @@ int archive_file(int fd_archive, const char *file)
     write(fd_archive, file, file_name_size);
     write(fd_archive, &compressed_size, sizeof(compressed_size));
 
-    int written = copy(fd, fd_archive);
+    ssize_t written = copy(fd, fd_archive);
 
     close(fd);
 
     if (written == -1) return -1;
-    else return written + sizeof(file_name_size) + file_name_size + sizeof(compressed_size);
+    else return written + (ssize_t)sizeof(file_name_size) + (ssize_t)file_name_size + (ssize_t)sizeof(compressed_size);
 }
 
 
@@ -126,7 +126,7 @@ int archive_file(int fd_archive, const char *file)
  *
  * @return The total number of bytes written to the archive, including file headers, or -1 in case of errors.
  */
-int create_archive(const char *archive_f, char **file_list, uint32_t file_count)
+ssize_t create_archive(const char *archive_f, char **file_list, uint32_t file_count)
 {
     int fd = open(archive_f, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1)
@@ -137,10 +137,10 @@ int create_archive(const char *archive_f, char **file_list, uint32_t file_count)
     uint32_t file_count_le = __builtin_bswap32(file_count);
     write(fd, &file_count_le, sizeof(file_count));
 
-    int total = sizeof(file_count);
+    ssize_t total = sizeof(file_count);
     for (uint32_t i = 0; i < file_count; i++)
     {
-        int written = archive_file(fd, file_list[i]);
+        ssize_t written = archive_file(fd, file_list[i]);
         if (written == -1)
         {
             close(fd);
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
     char **file_list = &argv[2];
     uint32_t file_count = argc - 2;
 
-    int result = create_archive(archive_file, file_list, file_count);
+    ssize_t result = create_archive(archive_file, file_list, file_count);
 
     if (result == -1)
     {
@@ -193,6 +193,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    printf("The archive '%s' has been successfully created. Size : %d bytes\n", archive_file, result);
+    printf("The archive '%s' has been successfully created. Size : %zd bytes\n", archive_file, result);
     return 0;
 }

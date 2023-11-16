@@ -100,7 +100,7 @@ ssize_t extract_file(int fd_archive)
         return -1;
     }
 
-    ssize_t res = copy_content(fd_archive, fd_file, file_size);
+    ssize_t res = copy_content(fd_archive, fd_file, (ssize_t)file_size);
 
     close(fd_file);
 
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     }
 
     uint32_t result = extract_archive(argv[1]);
-    if (result == -1)
+    if (result == (uint32_t)-1)
     {
         perror("Error extracting archive");
         return 1;

@@ -31,7 +31,7 @@ int file_size(int fd);
  *
  * @return The total number of bytes written to the destination file. In the case of error, returns -1.
  */
-int copy(int source, int destination);
+ssize_t copy(int source, int destination);
 
 /**
  * @function int archive_file(int fd_archive, const char *file)
@@ -42,7 +42,7 @@ int copy(int source, int destination);
  *
  * @return The total number of bytes written to the archive, or -1 in the case of errors.
  */
-int archive_file(int fd_archive, const char *file);
+ssize_t archive_file(int fd_archive, const char *file);
 
 
 /**
@@ -55,7 +55,7 @@ int archive_file(int fd_archive, const char *file);
  *
  * @return The total number of bytes written to the archive, including file headers, or -1 in case of errors.
  */
-int create_archive(const char *archive_file, char **file_list, uint32_t file_count);
+ssize_t create_archive(const char *archive_file, char **file_list, uint32_t file_count);
 
 /**
  * @function int main(int argc, char *argv[])
