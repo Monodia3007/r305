@@ -112,7 +112,9 @@ ssize_t archive_file(int fd_archive, const char *file)
     close(fd);
 
     if (written == -1) return -1;
-    else return written + (ssize_t)sizeof(file_name_size) + (ssize_t)file_name_size + (ssize_t)sizeof(compressed_size);
+    else
+        return written + (ssize_t) sizeof(file_name_size) + (ssize_t) file_name_size +
+               (ssize_t) sizeof(compressed_size);
 }
 
 

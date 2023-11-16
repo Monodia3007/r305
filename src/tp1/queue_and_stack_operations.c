@@ -639,7 +639,7 @@ void test_file_variable(void)
  *
  * @brief This is the main file that contains the entry point of the program.
  */
-int run_queue_and_stack_operations(void )
+int run_queue_and_stack_operations(void)
 {
     test_pile_fixe();
     test_pile_variable();

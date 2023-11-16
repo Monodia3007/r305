@@ -12,18 +12,22 @@ volatile int cancel = 0;
  * allocates memory using malloc(). The function runs indefinitely until an
  * error occurs during the memory allocation.
  */
-void* scan_key(void* arg) {
+void *scan_key(void *arg)
+{
     char key;
-    while(1) {
+    while (1)
+    {
         key = getchar();
-        if(key == 'q') {
+        if (key == 'q')
+        {
             cancel = 1;
             return NULL;
         }
     }
 }
 
-void run_infinite_malloc(void) {
+void run_infinite_malloc(void)
+{
     int ram_consumed = 0;
     pthread_t tid;
 

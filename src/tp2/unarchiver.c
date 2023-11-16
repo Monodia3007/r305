@@ -100,7 +100,7 @@ ssize_t extract_file(int fd_archive)
         return -1;
     }
 
-    ssize_t res = copy_content(fd_archive, fd_file, (ssize_t)file_size);
+    ssize_t res = copy_content(fd_archive, fd_file, (ssize_t) file_size);
 
     close(fd_file);
 
