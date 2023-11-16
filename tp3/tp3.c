@@ -9,11 +9,11 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include <sys/syslimits.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <grp.h>
 #include <pwd.h>
+#include <sys/wait.h>
 
 /**
  * @brief Prints the octal representation of user, group, and other permissions.
