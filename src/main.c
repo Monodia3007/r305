@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     if(argc < 2) {
         printf("Please provide an argument to run specific module\n");
-        return 0;
+        return 1;
     }
 
     if(strcmp(argv[1], "-infinite_malloc") == 0) {
