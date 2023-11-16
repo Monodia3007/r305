@@ -17,3 +17,10 @@ add_executable(
         src/test/no_ram_for_you.c
         src/test/no_ram_for_you.h
 )
+
+find_package(Threads REQUIRED)
+
+target_link_libraries(
+        r305
+        ${CMAKE_THREAD_LIBS_INIT}
+)
