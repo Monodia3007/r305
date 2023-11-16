@@ -5,12 +5,17 @@
 
 volatile int cancel = 0;
 
+
 /**
- * @brief Function to continuously allocate memory using malloc().
+ * @brief Scans the keyboard input in a separate thread
  *
- * This file contains the implementation of a function that continuously
- * allocates memory using malloc(). The function runs indefinitely until an
- * error occurs during the memory allocation.
+ * This function is responsible for scanning the keyboard input in a separate thread.
+ * It takes a void pointer as an argument, which can be used to pass any additional
+ * arguments required for the scan_key function.
+ *
+ * @param arg A void pointer that can be used to pass any optional arguments
+ *
+ * @return void
  */
 void *scan_key(void *arg)
 {
@@ -26,6 +31,13 @@ void *scan_key(void *arg)
     }
 }
 
+/**
+ * @brief Function to continuously allocate memory using malloc().
+ *
+ * This file contains the implementation of a function that continuously
+ * allocates memory using malloc(). The function runs indefinitely until an
+ * error occurs during the memory allocation.
+ */
 void run_infinite_malloc(void)
 {
     int ram_consumed = 0;

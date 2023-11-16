@@ -635,9 +635,11 @@ void test_file_variable(void)
 }
 
 /**
- * @file tp1.c
+ * @brief Performs various operations on queue and stack data structures.
  *
- * @brief This is the main file that contains the entry point of the program.
+ * This function demonstrates the usage of different operations for queue and stack data structures.
+ * It creates a queue and a stack, then performs a series of operations on them such as insertion,
+ * deletion, checking if empty, and printing the elements.
  */
 int run_queue_and_stack_operations(void)
 {
