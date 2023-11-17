@@ -22,7 +22,7 @@ void *scan_key(void *arg)
     char key;
     while (1)
     {
-        key = getchar();
+        key = (char) getchar();
         if (key == 'q')
         {
             cancel = 1;
