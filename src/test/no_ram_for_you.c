@@ -13,11 +13,9 @@ volatile int cancel = 0;
  * It takes a void pointer as an argument, which can be used to pass any additional
  * arguments required for the scan_key function.
  *
- * @param arg A void pointer that can be used to pass any optional arguments
- *
  * @return void
  */
-void *scan_key(void *arg)
+void *scan_key()
 {
     char key;
     while (1)
@@ -42,6 +40,7 @@ void run_infinite_malloc(void)
 {
     int ram_consumed = 0;
     pthread_t tid;
+    void* ptr;
 
     // Create a separate thread to listen for the 'q' key
     pthread_create(&tid, NULL, &scan_key, NULL);
@@ -49,7 +48,8 @@ void run_infinite_malloc(void)
     while (!cancel)
     {
         ram_consumed += 1;
-        malloc(1024);
+        ptr = malloc(1024);
+        printf("%s", (char*)ptr);
         printf("%dMio\n", ram_consumed);
     }
 
