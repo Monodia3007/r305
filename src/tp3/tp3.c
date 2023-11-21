@@ -14,7 +14,7 @@
 #include <grp.h>
 #include <pwd.h>
 #include <sys/wait.h>
-#include <sys/syslimits.h>
+#include <linux/limits.h>
 
 /**
  * @brief Prints the octal representation of user, group, and other permissions.
@@ -60,20 +60,21 @@ int afficher_infos(const char *chemin)
     }
 
     char type;
-    switch (infos.st_mode & S_IFMT)
+    if (S_ISREG(infos.st_mode))
     {
-        case S_IFREG:
-            type = '-';
-            break;
-        case S_IFDIR:
-            type = 'd';
-            break;
-        case S_IFLNK:
-            type = 'l';
-            break;
-        default:
-            type = '?';
-            break;
+        type = '-';
+    }
+    else if (S_ISDIR(infos.st_mode))
+    {
+        type = 'd';
+    }
+    else if (S_ISLNK(infos.st_mode))
+    {
+        type = 'l';
+    }
+    else
+    {
+        type = '?';
     }
 
     printf("\x001B[1;95m");

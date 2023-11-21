@@ -9,6 +9,7 @@
 #define R305_TP3_H
 
 #include <sys/stat.h>
+#include <sys/types.h>
 
 /**
  * @brief Prototype for function to display file permissions
