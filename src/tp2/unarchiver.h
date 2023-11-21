@@ -13,6 +13,7 @@
 #define R305_UNARCHIVER_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 
 /**

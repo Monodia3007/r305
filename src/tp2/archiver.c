@@ -10,6 +10,7 @@
  * @date 2023-10-24
  */
 
+#include <sys/types.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <fcntl.h>

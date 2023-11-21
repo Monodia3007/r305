@@ -13,7 +13,7 @@
 #define R305_ARCHIVER_H
 
 #include <stdint.h>
-
+#include <sys/types.h>
 
 /**
  * @function int file_size(int fd)
