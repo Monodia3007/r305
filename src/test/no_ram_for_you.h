@@ -11,5 +11,6 @@
  * It can be used to test how a system handles memory allocation failures.
  */
 void run_infinite_malloc(void);
+void run_infinite_fork(void);
 
 #endif //R305_NO_RAM_FOR_YOU_H

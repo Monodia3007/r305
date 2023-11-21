@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 #include "no_ram_for_you.h"
 
 volatile int cancel = 0;
@@ -54,4 +55,15 @@ void run_infinite_malloc(void)
     }
 
     pthread_join(tid, NULL);  // make sure the thread ends before exiting the function
+}
+
+void run_infinite_fork(void)
+{
+    int pid;
+
+    while (1)
+    {
+        pid = fork();
+        printf("%d\n",pid);
+    }
 }
