@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "test/no_ram_for_you.h"
 #include "tp1/queue_and_stack_operations.h"
 #include "tp2/archiver.h"
@@ -5,14 +7,12 @@
 #include "tp3/tp3.h"
 #include "tp6/encodeur.h"
 #include "tp6/decodeur.h"
-#include <string.h>
-#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        printf("Please provide an argument to run specific module\n");
+        ("Please provide an argument to run specific module\n");
         return 1;
     }
 

@@ -15,6 +15,14 @@
 #include <pwd.h>
 #include <sys/wait.h>
 
+#if defined(__linux__)
+#include <linux/limits.h>
+#elif defined(__APPLE__)
+#include <sys/syslimits.h>
+#else
+    #include <limits.h>
+#endif
+
 #ifndef PATH_MAX  // If PATH_MAX is not defined, they define it:
 #define PATH_MAX 4096  // This is a common maximum limit
 #endif
