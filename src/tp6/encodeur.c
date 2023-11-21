@@ -10,12 +10,12 @@
 /**
  * @brief Converts a character value to an integer.
  *
- * This function converts a character value to its corresponding integer value.
+ * This function takes a character value, 'valeur', interprets it as an unsigned integer, and manipulates it
+ * to return a character based on the ASCII value of the integer.
  *
  * @param valeur The character value to be converted.
  * @return The integer value representation of the character.
  */
-
 char convertir(char valeur)
 {
     if (valeur >= 0 && valeur < 26) return 'A' + valeur;
@@ -27,11 +27,15 @@ char convertir(char valeur)
 }
 
 /**
- * @file encoder_bloc.h
+ * @brief Encodes a block from the source file.
  *
- * @brief This file contains the declaration for the function `encoder_bloc`.
+ * This function takes a block of characters from the source file and encodes it
+ * using the convertir function and a specific encoding algorithm.
+ *
+ * @param source A pointer to the block to be encoded.
+ * @param taille_source The size of the block to be encoded.
+ * @param destination A pointer to where the encoded block will be stored.
  */
-
 void encoder_bloc(const char *source, int taille_source, char *destination)
 {
     char bloc[4];
@@ -48,14 +52,13 @@ void encoder_bloc(const char *source, int taille_source, char *destination)
 /**
  * @brief Encodes a file using a specific algorithm and saves the encoded file to a destination file.
  *
- * This function takes the source file and encodes it using a specific algorithm. The encoded file
- * is then saved to the destination file.
+ * This function takes the source file and encodes it consecutively using the encoder_bloc function
+ * The encoded file is then saved to the destination file.
  *
  * @param source The file descriptor of the source file to encode.
  * @param destination The file descriptor of the destination file to save the encoded data.
- * @return void
+ * @return Returns 0 on successful encoding, and -1 on error.
  */
-
 int encoder_fichier(int source, int destination)
 {
     int lus;
@@ -76,6 +79,16 @@ int encoder_fichier(int source, int destination)
     return 0;
 }
 
+/**
+ * @brief Runs the encoder program.
+ *
+ * This function runs the encoder program. It opens and encodes a source file, then writes the encoded data
+ * to a destination file.
+ *
+ * @param argc The argument count.
+ * @param argv An array of arguments.
+ * @return Returns 0 on successful execution, and 1 on error.
+ */
 int run_encodeur(int argc, char *argv[]) {
     int sourcefd = 0;  // stdin
     int destfd = 1;   // stdout

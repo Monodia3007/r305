@@ -7,6 +7,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+/**
+ * @brief Inversely converts a character to its equivalent numeric value.
+ *
+ * This function offers an inverse mechanism of convertir function in the encoder. It takes a character
+ * from the encoded ASCII set and converts it back to the originally encoded numeric value.
+ *
+ * @param valeur The character value to be converted.
+ * @return The numeric value equivalent of the character, as per the encoding algorithm.
+ */
 char convertir_inverse(char valeur)
 {
     if ('A' <= valeur && valeur <= 'Z') return valeur - 'A';
@@ -17,6 +26,16 @@ char convertir_inverse(char valeur)
     return -1; // This value will be used for padding ('=') as well
 }
 
+/**
+ * @brief Decodes a single block from the source file.
+ *
+ * This function takes an encoded block of characters and decodes it
+ * using the convertir_inverse function. The decoded data is directly written to the destination address.
+ *
+ * @param source A pointer to the encoded block to be decoded.
+ * @param destination A pointer to the address where the decoded block should be written.
+ * @param taille_source Size of the encoded block.
+ */
 void decoder_bloc(const char *source, char *destination, int taille_source)
 {
     unsigned char bloc[4];
@@ -28,6 +47,16 @@ void decoder_bloc(const char *source, char *destination, int taille_source)
     if (taille_source > 3) destination[2] = ((bloc[2] & 0x03) << 6) | (bloc[3]);
 }
 
+/**
+ * @brief Decodes a single block from the source file.
+ *
+ * This function takes an encoded block of characters and decodes it
+ * using the convertir_inverse function. The decoded data is directly written to the destination address.
+ *
+ * @param source A pointer to the encoded block to be decoded.
+ * @param destination A pointer to the address where the decoded block should be written.
+ * @param taille_source Size of the encoded block.
+ */
 int decoder_fichier(int source, int destination)
 {
     int lus;
@@ -51,6 +80,16 @@ int decoder_fichier(int source, int destination)
     return 0;
 }
 
+/**
+ * @brief Runs the decoder program.
+ *
+ * The function initializes the decoder program. It handles file opening, calls the decoding function,
+ * and performs file cleanup once decoding is done.
+ *
+ * @param argc The argument count.
+ * @param argv An array of arguments provided to the program.
+ * @return Returns 0 on successful execution and 1 in case of any errors.
+ */
 int run_decodeur(int argc, char *argv[]) {
     int sourcefd = 0;  // stdin
     int destfd = 1;   // stdout
