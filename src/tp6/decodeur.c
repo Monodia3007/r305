@@ -14,18 +14,18 @@ char convertir_inverse(char valeur)
     if ('0' <= valeur && valeur <= '9') return valeur - '0' + 52;
     if (valeur == '+') return 62;
     if (valeur == '/') return 63;
-    return -1;
+    return -1; // This value will be used for padding ('=') as well
 }
 
-void decoder_bloc(const char *source, char *destination)
+void decoder_bloc(const char *source, char *destination, int taille_source)
 {
     unsigned char bloc[4];
     for (int i = 0; i < 4; i++) {
-        bloc[i] = convertir_inverse(source[i]);
+        bloc[i] = source[i] == '=' ? 0 : convertir_inverse(source[i]);
     }
     destination[0] = (bloc[0] << 2) | (bloc[1] >> 4);
-    destination[1] = ((bloc[1] & 0x0F) << 4) | (bloc[2] >> 2);
-    destination[2] = ((bloc[2] & 0x03) << 6) | (bloc[3]);
+    if (taille_source > 2) destination[1] = ((bloc[1] & 0x0F) << 4) | (bloc[2] >> 2);
+    if (taille_source > 3) destination[2] = ((bloc[2] & 0x03) << 6) | (bloc[3]);
 }
 
 int decoder_fichier(int source, int destination)
@@ -35,8 +35,11 @@ int decoder_fichier(int source, int destination)
     char buffer_out[3];
 
     while ((lus = read(source, &buffer_in, 4)) > 0) {
-        decoder_bloc(buffer_in, buffer_out);
-        if (write(destination, &buffer_out, lus-1) != lus-1) {
+        decoder_bloc(buffer_in, buffer_out, lus);
+        int toWrite = lus - 1;
+        if (buffer_in[lus-1] == '=') --toWrite;
+        if (buffer_in[lus-2] == '=') --toWrite;
+        if (write(destination, &buffer_out, toWrite) != toWrite) {
             perror("Erreur lors de l'ecriture");
             return -1;
         }

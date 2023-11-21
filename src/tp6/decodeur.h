@@ -6,7 +6,7 @@
 #define R305_DECODEUR_H
 
 char convertir_inverse(char valeur);
-void decoder_bloc(const char *source, char *destination);
+void decoder_bloc(const char *source, char *destination, int taille_source);
 int decoder_fichier(int source, int destination);
 int run_decodeur(int argc, char *argv[]);
 
