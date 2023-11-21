@@ -3,6 +3,8 @@
 #include "tp2/archiver.h"
 #include "tp2/unarchiver.h"
 #include "tp3/tp3.h"
+#include "tp6/encodeur.h"
+#include "tp6/decodeur.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -37,6 +39,14 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[1], "-tp3") == 0)
     {
         run_tp3(argc - 1, argv + 1);
+    }
+    else if (strcmp(argv[1], "-encodeur") == 0)
+    {
+        run_encodeur(argc - 1, argv + 1);
+    }
+    else if (strcmp(argv[1], "-decodeur") == 0)
+    {
+        run_decodeur(argc - 1, argv + 1);
     }
     else
     {

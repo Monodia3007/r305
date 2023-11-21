@@ -4,3 +4,5 @@ cmake-build-default/
 build/
 cmake-build-debug-wsl/
 cmake-build-default-wsl/
+obj/
+bin/
