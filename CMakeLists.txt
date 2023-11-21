@@ -18,6 +18,8 @@ add_executable(
         src/test/no_ram_for_you.h
 )
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
+
 find_package(Threads REQUIRED)
 
 target_link_libraries(

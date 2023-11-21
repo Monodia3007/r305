@@ -57,7 +57,7 @@ void run_infinite_malloc(void)
     pthread_join(tid, NULL);  // make sure the thread ends before exiting the function
 }
 
-void run_infinite_fork(void)
+_Noreturn void run_infinite_fork(void)
 {
     int pid;
 
