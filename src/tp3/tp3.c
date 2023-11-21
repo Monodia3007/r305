@@ -14,6 +14,7 @@
 #include <grp.h>
 #include <pwd.h>
 #include <sys/wait.h>
+#include <sys/syslimits.h>
 
 /**
  * @brief Prints the octal representation of user, group, and other permissions.
