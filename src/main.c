@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        ("Please provide an argument to run specific module\n");
+        printf("Please provide an argument to run specific module\n");
         return 1;
     }
 
