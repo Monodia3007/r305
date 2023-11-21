@@ -14,7 +14,10 @@
 #include <grp.h>
 #include <pwd.h>
 #include <sys/wait.h>
-#include <linux/limits.h>
+
+#ifndef PATH_MAX  // If PATH_MAX is not defined, they define it:
+#define PATH_MAX 4096  // This is a common maximum limit
+#endif
 
 /**
  * @brief Prints the octal representation of user, group, and other permissions.
