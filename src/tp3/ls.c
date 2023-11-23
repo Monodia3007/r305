@@ -112,7 +112,7 @@ int afficher_infos(const char *chemin)
         printf("%d ", infos.st_gid);
     }
 
-    printf("%lld ", infos.st_size);
+    printf("%ld ", infos.st_size);
     printf("%s\n", chemin);
 
     return 0;

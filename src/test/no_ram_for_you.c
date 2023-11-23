@@ -41,7 +41,6 @@ void run_infinite_malloc(void)
 {
     int ram_consumed = 0;
     pthread_t tid;
-    void* ptr;
 
     // Create a separate thread to listen for the 'q' key
     pthread_create(&tid, NULL, &scan_key, NULL);
@@ -49,7 +48,7 @@ void run_infinite_malloc(void)
     while (!cancel)
     {
         ram_consumed += 1;
-        ptr = malloc(1024);
+        void* ptr = malloc(1024);
         printf("%s", (char*)ptr);
         printf("%dMio\n", ram_consumed);
     }
@@ -59,11 +58,9 @@ void run_infinite_malloc(void)
 
 _Noreturn void run_infinite_fork(void)
 {
-    int pid;
-
     while (1)
     {
-        pid = fork();
+        int const pid = fork();
         printf("%d\n",pid);
     }
 }
