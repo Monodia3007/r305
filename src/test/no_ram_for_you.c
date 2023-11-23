@@ -18,10 +18,9 @@ volatile int cancel = 0;
  */
 void *scan_key()
 {
-    char key;
     while (1)
     {
-        key = (char) getchar();
+        char const key = getchar();
         if (key == 'q')
         {
             cancel = 1;
@@ -43,7 +42,7 @@ void run_infinite_malloc(void)
     pthread_t tid;
 
     // Create a separate thread to listen for the 'q' key
-    pthread_create(&tid, NULL, &scan_key, NULL);
+    pthread_create(&tid, NULL, scan_key, NULL);
 
     while (!cancel)
     {
@@ -58,7 +57,12 @@ void run_infinite_malloc(void)
 
 _Noreturn void run_infinite_fork(void)
 {
-    while (1)
+    pthread_t tid;
+
+    // Create a separate thread to listen for the 'q' key
+    pthread_create(&tid, NULL, scan_key, NULL);
+
+    while (!cancel)
     {
         int const pid = fork();
         printf("%d\n",pid);
