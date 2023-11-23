@@ -16,7 +16,7 @@
  * @param valeur The character value to be converted.
  * @return The numeric value equivalent of the character, as per the encoding algorithm.
  */
-char convertir_inverse(char valeur)
+char convertir_inverse(char const valeur)
 {
     if ('A' <= valeur && valeur <= 'Z') return valeur - 'A';
     if ('a' <= valeur && valeur <= 'z') return valeur - 'a' + 26;
@@ -36,15 +36,15 @@ char convertir_inverse(char valeur)
  * @param destination A pointer to the address where the decoded block should be written.
  * @param taille_source Size of the encoded block.
  */
-void decoder_bloc(const char *source, char *destination, int taille_source)
+void decoder_bloc(const char *source, char *destination, int const taille_source)
 {
     unsigned char bloc[4];
     for (int i = 0; i < 4; i++) {
         bloc[i] = source[i] == '=' ? 0 : convertir_inverse(source[i]);
     }
-    destination[0] = (bloc[0] << 2) | (bloc[1] >> 4);
-    if (taille_source > 2) destination[1] = ((bloc[1] & 0x0F) << 4) | (bloc[2] >> 2);
-    if (taille_source > 3) destination[2] = ((bloc[2] & 0x03) << 6) | (bloc[3]);
+    destination[0] = bloc[0] << 2 | bloc[1] >> 4;
+    if (taille_source > 2) destination[1] = (bloc[1] & 0x0F) << 4 | bloc[2] >> 2;
+    if (taille_source > 3) destination[2] = (bloc[2] & 0x03) << 6 | bloc[3];
 }
 
 /**
@@ -55,9 +55,8 @@ void decoder_bloc(const char *source, char *destination, int taille_source)
  *
  * @param source A pointer to the encoded block to be decoded.
  * @param destination A pointer to the address where the decoded block should be written.
- * @param taille_source Size of the encoded block.
  */
-int decoder_fichier(int source, int destination)
+int decoder_fichier(int const source, int const destination)
 {
     int lus;
     char buffer_in[4];
@@ -90,7 +89,7 @@ int decoder_fichier(int source, int destination)
  * @param argv An array of arguments provided to the program.
  * @return Returns 0 on successful execution and 1 in case of any errors.
  */
-int run_decodeur(int argc, char *argv[]) {
+int run_decodeur(int const argc, char *argv[]) {
     int sourcefd = 0;  // stdin
     int destfd = 1;   // stdout
 

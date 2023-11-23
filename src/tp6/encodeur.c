@@ -16,7 +16,7 @@
  * @param valeur The character value to be converted.
  * @return The integer value representation of the character.
  */
-char convertir(char valeur)
+char convertir(char const valeur)
 {
     if (valeur >= 0 && valeur < 26) return 'A' + valeur;
     if (valeur >= 26 && valeur < 52) return 'a' + (valeur - 26);
@@ -36,13 +36,13 @@ char convertir(char valeur)
  * @param taille_source The size of the block to be encoded.
  * @param destination A pointer to where the encoded block will be stored.
  */
-void encoder_bloc(const char *source, int taille_source, char *destination)
+void encoder_bloc(const char *source, int const taille_source, char *destination)
 {
     char bloc[4];
     bloc[0] = convertir(source[0] >> 2);
-    bloc[1] = convertir(((source[0] & 3) << 4) | ((source[1] & 0xF0) >> 4));
-    bloc[2] = (taille_source > 1 ? convertir(((source[1] & 0xF) << 2) | (source[2] >> 6)) : '=');
-    bloc[3] = (taille_source > 2 ? convertir(source[2] & 0x3F) : '=');
+    bloc[1] = convertir((source[0] & 3) << 4 | (source[1] & 0xF0) >> 4);
+    bloc[2] = taille_source > 1 ? convertir((source[1] & 0xF) << 2 | source[2] >> 6) : '=';
+    bloc[3] = taille_source > 2 ? convertir(source[2] & 0x3F) : '=';
 
     for(int i = 0; i < 4; i++) {
         destination[i] = bloc[i];
@@ -59,7 +59,7 @@ void encoder_bloc(const char *source, int taille_source, char *destination)
  * @param destination The file descriptor of the destination file to save the encoded data.
  * @return Returns 0 on successful encoding, and -1 on error.
  */
-int encoder_fichier(int source, int destination)
+int encoder_fichier(int const source, int const destination)
 {
     int lus;
     char buffer_in[3];
@@ -89,7 +89,7 @@ int encoder_fichier(int source, int destination)
  * @param argv An array of arguments.
  * @return Returns 0 on successful execution, and 1 on error.
  */
-int run_encodeur(int argc, char *argv[]) {
+int run_encodeur(int const argc, char *argv[]) {
     int sourcefd = 0;  // stdin
     int destfd = 1;   // stdout
 
