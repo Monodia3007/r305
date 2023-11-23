@@ -1,12 +1,12 @@
 /**
- * @file tp3.h
+ * @file ls.h
  * @brief Header file for TP3 in Project r305.
  *
  * This header file contains the prototypes for the functions used in the tp3.c source file.
  */
 
-#ifndef R305_TP3_H
-#define R305_TP3_H
+#ifndef R305_LS_H
+#define R305_LS_H
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -49,6 +49,6 @@ int lancer_traitement(const char *chemin);
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int run_tp3(int argc, char *argv[]);
+int run_ls(int argc, char *argv[]);
 
-#endif //R305_TP3_H
+#endif //R305_LS_H

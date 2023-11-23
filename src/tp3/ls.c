@@ -1,11 +1,11 @@
 /**
- * @file tp3.c
+ * @file ls.c
  * @brief File operations, including file system information retrieval and directory listing, with fork support.
  * @author Lilith Camplin
  * @date 14-11-2023
  */
 
-#include "tp3.h"
+#include "ls.h"
 #include <stdio.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -40,14 +40,14 @@
  *
  * The function doesn't return a value.
  */
-void print_octal_permissions(mode_t mode)
+void print_octal_permissions(mode_t const mode)
 {
     /* User permissions */
-    printf("%o", ((mode & S_IRUSR) ? 4 : 0) + ((mode & S_IWUSR) ? 2 : 0) + ((mode & S_IXUSR) ? 1 : 0));
+    printf("%o", (mode & S_IRUSR ? 4 : 0) + (mode & S_IWUSR ? 2 : 0) + (mode & S_IXUSR ? 1 : 0));
     /* Group permissions */
-    printf("%o", ((mode & S_IRGRP) ? 4 : 0) + ((mode & S_IWGRP) ? 2 : 0) + ((mode & S_IXGRP) ? 1 : 0));
+    printf("%o", (mode & S_IRGRP ? 4 : 0) + (mode & S_IWGRP ? 2 : 0) + (mode & S_IXGRP ? 1 : 0));
     /* Other permissions */
-    printf("%o", ((mode & S_IROTH) ? 4 : 0) + ((mode & S_IWOTH) ? 2 : 0) + ((mode & S_IXOTH) ? 1 : 0));
+    printf("%o", (mode & S_IROTH ? 4 : 0) + (mode & S_IWOTH ? 2 : 0) + (mode & S_IXOTH ? 1 : 0));
     putchar(' ');
 }
 
@@ -94,8 +94,8 @@ int afficher_infos(const char *chemin)
     // Use custom function to print permissions:
     print_octal_permissions(infos.st_mode);
 
-    struct passwd *pwd = getpwuid(infos.st_uid);
-    struct group *grp = getgrgid(infos.st_gid);
+    struct passwd const *pwd = getpwuid(infos.st_uid);
+    struct group const *grp = getgrgid(infos.st_gid);
 
     if (pwd != NULL)
     {
@@ -113,7 +113,7 @@ int afficher_infos(const char *chemin)
         printf("%d ", infos.st_gid);
     }
 
-    printf("%lld ", (long long) infos.st_size);
+    printf("%lld ", infos.st_size);
     printf("%s\n", chemin);
 
     return 0;
@@ -178,7 +178,7 @@ __attribute__((unused)) void traiter(void)
  */
 int lancer_traitement(const char *chemin)
 {
-    int pid = fork();
+    int const pid = fork();
 
     if (pid == 0)
     { // This is child process
@@ -188,14 +188,14 @@ int lancer_traitement(const char *chemin)
             exit(1);
         }
         exit(0);
-    } else if (pid > 0)
+    }
+    if (pid > 0)
     { // This is parent process
         return pid;
-    } else
-    { // Fork failed
-        perror("fork");
-        return -1;
     }
+    perror("fork");
+    return -1;
+
 }
 
 /**
@@ -209,7 +209,7 @@ int lancer_traitement(const char *chemin)
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int run_tp3(int argc, char *argv[])
+int run_ls(int const argc, char *argv[])
 {
     if (argc < 2)
     {

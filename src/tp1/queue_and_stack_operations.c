@@ -50,7 +50,7 @@ int pile_fixe_est_vide(const pile_fixe_t *pile)
  * @param element The element to be added to the stack.
  * @return Returns 0 if the operation is successful or -1 if the stack is full.
  */
-int pile_fixe_empiler(pile_fixe_t *pile, element_t element)
+int pile_fixe_empiler(pile_fixe_t *pile, element_t const element)
 {
     if (pile->sommet >= TAILLE_PILE - 1)
         return -1;
@@ -126,7 +126,7 @@ int pile_variable_est_vide(const pile_variable_t *pile)
  * @param pile The variable stack.
  * @param element The element to be pushed onto the stack.
  */
-int pile_variable_empiler(pile_variable_t *pile, element_t element)
+int pile_variable_empiler(pile_variable_t *pile, element_t const element)
 {
     if (pile->sommet >= pile->taille - 1)
     { // If the stack is full
@@ -237,7 +237,7 @@ int file_fixe_est_vide(const file_fixe_t *file)
  * @param file A pointer to the file_fixe_t structure representing the fixed-size file.
  * @param element The element to be enqueued into the file.
  */
-int file_fixe_enfiler(file_fixe_t *file, element_t element)
+int file_fixe_enfiler(file_fixe_t *file, element_t const element)
 {
     if (file->tail == TAILLE_FILE)
         return -1;
@@ -267,7 +267,7 @@ int file_fixe_defiler(file_fixe_t *file, element_t *p_element)
 }
 
 /**
- * @file file_fixe.h
+ * @file queue_and_stack_operations.h
  * @brief Documentation for the file_fixe_afficher function.
  */
 void file_fixe_afficher(const file_fixe_t *file)
@@ -317,7 +317,7 @@ int file_variable_est_vide(const file_variable_t *file)
  * @param file The file variable to enfile the element into.
  * @param element The element to enfile.
  */
-int file_variable_enfiler(file_variable_t *file, element_t element)
+int file_variable_enfiler(file_variable_t *file, element_t const element)
 {
     if (file->tail == file->taille)
     {   // if the queue is full
@@ -448,8 +448,6 @@ void test_pile_fixe(void)
  * This function tests the behavior of the `pile_variable` function. The `pile_variable` function
  * takes a variable of any type and piles it on top of an existing stack. The stack is implemented
  * using a dynamic array.
- *
- * @param void No input parameters.
  *
  * @return void No return value.
  *

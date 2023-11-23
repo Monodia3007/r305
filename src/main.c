@@ -4,11 +4,11 @@
 #include "tp1/queue_and_stack_operations.h"
 #include "tp2/archiver.h"
 #include "tp2/unarchiver.h"
-#include "tp3/tp3.h"
+#include "tp3/ls.h"
 #include "tp6/encodeur.h"
 #include "tp6/decodeur.h"
 
-int main(int argc, char *argv[])
+int main(int const argc, char *argv[])
 {
     if (argc < 2)
     {
@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
     {
         run_unarchiver(argc - 1, argv + 1);
     }
-    else if (strcmp(argv[1], "-tp3") == 0)
+    else if (strcmp(argv[1], "-ls") == 0)
     {
-        run_tp3(argc - 1, argv + 1);
+        run_ls(argc - 1, argv + 1);
     }
     else if (strcmp(argv[1], "-encodeur") == 0)
     {
