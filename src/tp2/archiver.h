@@ -52,13 +52,13 @@ ssize_t archive_file(int fd_archive, const char *file);
  * @function int create_archive(const char *archive_file, char **file_list, uint32_t file_count)
  * @brief Creates an archive and adds multiple files to it.
  *
- * @param archive_file A string pointer to the file name of the archive
+ * @param archive_f A string pointer to the file name of the archive
  * @param file_list A pointer to the list of file names to be archived
  * @param file_count The number of files in the list
  *
  * @return The total number of bytes written to the archive, including file headers, or -1 in case of errors.
  */
-ssize_t create_archive(const char *archive_file, char **file_list, uint32_t file_count);
+ssize_t create_archive(const char *archive_f, char **file_list, uint32_t file_count);
 
 /**
  * @function int main(int argc, char *argv[])

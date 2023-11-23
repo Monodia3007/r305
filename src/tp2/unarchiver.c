@@ -27,19 +27,20 @@
  *
  * @return The total number of bytes copied, or -1 in case of errors.
  */
-ssize_t copy_content(int source, int destination, ssize_t size)
+ssize_t copy_content(int const source, int const destination, ssize_t size)
 {
-    char buffer[1024];
     ssize_t total = 0;
     while (size > 0)
     {
-        ssize_t bytes_to_read = ((int) sizeof(buffer) < size) ? (int) sizeof(buffer) : size;
-        ssize_t read_bytes = read(source, buffer, bytes_to_read);
+        char buffer[1024];
+        ssize_t const bytes_to_read = (int) sizeof(buffer) < size ? (int) sizeof(buffer) : size;
+        ssize_t const read_bytes = read(source, buffer, bytes_to_read);
         if (read_bytes < 0)
         {
             perror("Read error in copy_content");
             return -1;
-        } else if (read_bytes == 0)
+        }
+        if (read_bytes == 0)
         {
             fprintf(stderr, "EOF encountered in copy_content with %zd bytes left to read\n", size);
             return -1;
@@ -48,7 +49,7 @@ ssize_t copy_content(int source, int destination, ssize_t size)
         ssize_t written_bytes = 0;
         while (written_bytes < read_bytes)
         {
-            ssize_t result = write(destination, buffer + written_bytes, read_bytes - written_bytes);
+            ssize_t const result = write(destination, buffer + written_bytes, read_bytes - written_bytes);
             if (result < 0)
             {
                 perror("Write error in copy_content");
@@ -70,7 +71,7 @@ ssize_t copy_content(int source, int destination, ssize_t size)
  *
  * @return The total number of bytes written to the extracted file, or -1 in case of errors.
  */
-ssize_t extract_file(int fd_archive)
+ssize_t extract_file(int const fd_archive)
 {
     uint8_t file_name_size;
     if (read(fd_archive, &file_name_size, sizeof(file_name_size)) != sizeof(file_name_size))
@@ -94,14 +95,14 @@ ssize_t extract_file(int fd_archive)
         return -1;
     }
 
-    int fd_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+    int const fd_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
     if (fd_file == -1)
     {
         perror("Error opening file for writing");
         return -1;
     }
 
-    ssize_t res = copy_content(fd_archive, fd_file, (ssize_t) file_size);
+    ssize_t const res = copy_content(fd_archive, fd_file, file_size);
 
     close(fd_file);
 
@@ -118,7 +119,7 @@ ssize_t extract_file(int fd_archive)
  */
 uint32_t extract_archive(const char *archive)
 {
-    int fd = open(archive, O_RDONLY);
+    int const fd = open(archive, O_RDONLY);
     if (fd == -1)
     {
         return -1;
@@ -154,7 +155,7 @@ uint32_t extract_archive(const char *archive)
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int run_unarchiver(int argc, char **argv)
+int run_unarchiver(int const argc, char **argv)
 {
     if (argc != 2)
     {
@@ -162,15 +163,15 @@ int run_unarchiver(int argc, char **argv)
         return 1;
     }
 
-    uint32_t result = extract_archive(argv[1]);
-    if (result == (-1u))
+    uint32_t const result = extract_archive(argv[1]);
+    if (result == -1u)
     {
         perror("Error extracting archive");
         return 1;
-    } else
-    {
-        printf("Successfully extracted %d file(s) from the archive.\n", result);
     }
+
+    printf("Successfully extracted %d file(s) from the archive.\n", result);
+
 
     return 0;
 }
