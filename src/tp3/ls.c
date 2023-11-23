@@ -88,7 +88,6 @@ int afficher_infos(const char *chemin)
         type = '?';
     }
 
-    printf("\x001B[1;95m");
     printf("%c ", type);
 
     // Use custom function to print permissions:
@@ -138,16 +137,28 @@ int afficher_repertoire(const char *chemin)
     }
 
     struct dirent *entree;
+
+    int color_index = 0;
+
+    // Define an array of color codes
+    const char *colors[] = {"\x1B[31m", "\x1B[33m", "\x1B[32m", "\x1B[34m", "\x1B[35m"};
+
     while ((entree = readdir(rep)) != NULL)
     {
         char chemin_fichier[PATH_MAX];
         snprintf(chemin_fichier, PATH_MAX, "%s/%s", chemin, entree->d_name);
+
+        // Set the color for this line
+        printf("%s", colors[color_index]);
 
         if (afficher_infos(chemin_fichier) == -1)
         {
             closedir(rep);
             return -1;
         }
+
+        // Increment the color index for next file
+        color_index = (color_index + 1) % (sizeof(colors) / sizeof(colors[0]));
     }
 
     closedir(rep);
