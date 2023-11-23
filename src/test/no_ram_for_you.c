@@ -57,12 +57,7 @@ void run_infinite_malloc(void)
 
 _Noreturn void run_infinite_fork(void)
 {
-    pthread_t tid;
-
-    // Create a separate thread to listen for the 'q' key
-    pthread_create(&tid, NULL, scan_key, NULL);
-
-    while (!cancel)
+    while (1)
     {
         int const pid = fork();
         printf("%d\n",pid);
