@@ -25,5 +25,5 @@ run: $(BDIR)/r305
 	./$(BDIR)/r305
 
 clean:
-	rm -rf $(ODIR)/*
-	rm -rf $(BDIR)/*
+	rm -rf $(ODIR)
+	rm -rf $(BDIR)

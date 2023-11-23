@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     else
     {
         printf("Invalid option\n");
+        return 1;
     }
 
     return 0;
