@@ -115,7 +115,7 @@ int afficher_infos(const char* chemin)
         printf("%4d ", infos.st_gid); // Print group ID
     }
 
-    printf("%5" PRIo64 " ", infos.st_size);  // Print file size
+    printf("%10" PRIo64 " ", infos.st_size);  // Print file size
     printf("%s\n", chemin); // Print file path
 
     return 0;
