@@ -59,7 +59,7 @@ void display_prompt()
 void replace_home_with_tilde(char *currentDirectory)
 {
     // Get user home directory
-    struct passwd *pw = getpwuid(getuid());
+    struct passwd const *pw = getpwuid(getuid());
     const char *homeDirectory = pw->pw_dir;
 
     // Convert absolute path to home-relative path
@@ -79,7 +79,7 @@ void replace_home_with_tilde(char *currentDirectory)
 void execute_command_line(char*** const commands, int const commandCount, int const backgroundFlag){
     int in = 0;
     int out;
-    int p[2];
+
 
     for (int i = 0; i < commandCount; i++){
         // Gérer la commande 'cd' dans le processus parent
@@ -94,6 +94,7 @@ void execute_command_line(char*** const commands, int const commandCount, int co
             continue;
         }
 
+        int p[2];
         pipe(p);
 
         if (i == commandCount - 1){
@@ -131,7 +132,7 @@ int launch_command(int const in, int const out, const char *command, char ** arg
     if (pid < 0){  // le fork a échoué
         return -1;
     }
-    else if (pid == 0){ // ici on se trouve dans le processus fils
+     if (pid == 0){ // ici on se trouve dans le processus fils
         if (in != 0){ // vérifier s'il faut rediriger l'entrée standard
             dup2(in, 0); // remplace l'entrée standard (0) par le descripteur de fichier "in"
             close(in);  // fermer le descripteur de fichier "in" car on n'en a plus besoin
