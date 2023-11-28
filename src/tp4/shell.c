@@ -49,6 +49,19 @@ void execute_ligne_commande(char*** commandes, int const nb, int const arriere_p
         // taking a command from the 'commandes' array
         char** command = commandes[i];
 
+        // Handle 'cd' command in parent process
+        if (strcmp(command[0], "cd") == 0)
+        {
+            if (command[1] != NULL)
+            {
+                if(chdir(command[1]) != 0)
+                {
+                    perror("chdir() error");
+                }
+            }
+            continue;
+        }
+
         // creating a child process to execute the command
         pid_t const pid = fork();
 
