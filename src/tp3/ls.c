@@ -98,24 +98,24 @@ int afficher_infos(const char* chemin)
 
     if (pwd != NULL)
     {
-        printf("%s ", pwd->pw_name);
+        printf("%15s ", pwd->pw_name); // Print user name
     }
     else
     {
-        printf("%d ", infos.st_uid);
+        printf("%4d ", infos.st_uid); // Print user ID
     }
 
     if (grp != NULL)
     {
-        printf("%s ", grp->gr_name);
+        printf("%10s ", grp->gr_name); // Print group name
     }
     else
     {
-        printf("%d ", infos.st_gid);
+        printf("%4d ", infos.st_gid); // Print group ID
     }
 
-    printf("%lld ", infos.st_size);
-    printf("%s\n", chemin);
+    printf("%5lld ", infos.st_size); // Print file size
+    printf("%s\n", chemin); // Print file path
 
     return 0;
 }

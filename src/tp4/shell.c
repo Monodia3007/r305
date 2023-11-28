@@ -87,6 +87,7 @@ void execute_ligne_commande(char*** commandes, int const nb, int const arriere_p
 
 void run_shell()
 {
+    printf("\033[35m");
     int flag, nb;
 
     while (1) {  // Loop forever until we hit a break statement
