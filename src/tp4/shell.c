@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <string.h>
+#include <pwd.h>
 #include "shell.h"
 #include "ligne_commande.h"
 
@@ -29,11 +30,26 @@ void affiche_prompt()
         return;
     }
 
+    // Remove '.local' from hostname
+    char *p = strstr(hostname, ".local");
+    if (p) *p = '\0';
+
     // Get current working directory
     if (getcwd(cwd, sizeof(cwd)) == NULL)
     {
         printf("Error getting CURRENT WORKING DIRECTORY.\n");
         return;
+    }
+
+    // Get home directory of user
+    struct passwd *pw = getpwuid(getuid());
+    const char *home_dir = pw->pw_dir;
+    int len_home_dir = strlen(home_dir);
+
+    // Convert absolute path to home-relative path
+    if (strncmp(cwd, home_dir, len_home_dir) == 0) // if cwd starts with home directory
+    {
+        sprintf(cwd, "~%s", &cwd[len_home_dir]);
     }
 
     // Display the prompt
