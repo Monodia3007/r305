@@ -6,7 +6,7 @@ ODIR=obj
 BDIR=bin
 SDIR=src
 
-_OBJ = main.o tp1/queue_and_stack_operations.o tp2/archiver.o tp2/unarchiver.o tp3/ls.o tp4/shell.o tp4/ligne_commande.o test/no_ram_for_you.o tp6/encodeur.o tp6/decodeur.o
+_OBJ = main.o tp1/queue_and_stack_operations.o tp2/archiver.o tp2/unarchiver.o tp3/ls.o tp4_5/shell.o tp4_5/ligne_commande.o test/no_ram_for_you.o tp6/encodeur.o tp6/decodeur.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c
