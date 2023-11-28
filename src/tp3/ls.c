@@ -114,7 +114,7 @@ int afficher_infos(const char* chemin)
         printf("%d ", infos.st_gid);
     }
 
-    printf("%ld ", infos.st_size);
+    printf("%lld ", infos.st_size);
     printf("%s\n", chemin);
 
     return 0;
@@ -254,6 +254,7 @@ int run_ls(int const argc, char* argv[])
     }
 
     free(pids);
+    printf("\033[0m"); // reset color
     printf("All child processes finished.\n");
     return 0;
 }
