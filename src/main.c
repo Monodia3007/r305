@@ -5,10 +5,11 @@
 #include "tp2/archiver.h"
 #include "tp2/unarchiver.h"
 #include "tp3/ls.h"
+#include "tp4/shell.h"
 #include "tp6/encodeur.h"
 #include "tp6/decodeur.h"
 
-int main(int const argc, char *argv[])
+int main(int const argc, char* argv[])
 {
     if (argc < 2)
     {
@@ -39,6 +40,10 @@ int main(int const argc, char *argv[])
     else if (strcmp(argv[1], "-ls") == 0)
     {
         run_ls(argc - 1, argv + 1);
+    }
+    else if (strcmp(argv[1], "-shell") == 0)
+    {
+        run_shell();
     }
     else if (strcmp(argv[1], "-encodeur") == 0)
     {

@@ -21,7 +21,7 @@
  *
  * @param pile Pointer to the fixed-size stack structure (pile_fixe_t).
  */
-void pile_fixe_initialiser(pile_fixe_t *pile)
+void pile_fixe_initialiser(pile_fixe_t* pile)
 {
     pile->sommet = -1;
 }
@@ -35,7 +35,7 @@ void pile_fixe_initialiser(pile_fixe_t *pile)
  * @param pile Pointer to the fixed-size stack to be checked
  * @return 1 if the stack is empty, 0 otherwise
  */
-int pile_fixe_est_vide(const pile_fixe_t *pile)
+int pile_fixe_est_vide(const pile_fixe_t* pile)
 {
     return pile->sommet == -1 ? 1 : 0;
 }
@@ -50,7 +50,7 @@ int pile_fixe_est_vide(const pile_fixe_t *pile)
  * @param element The element to be added to the stack.
  * @return Returns 0 if the operation is successful or -1 if the stack is full.
  */
-int pile_fixe_empiler(pile_fixe_t *pile, element_t const element)
+int pile_fixe_empiler(pile_fixe_t* pile, element_t const element)
 {
     if (pile->sommet >= TAILLE_PILE - 1)
         return -1;
@@ -72,7 +72,7 @@ int pile_fixe_empiler(pile_fixe_t *pile, element_t const element)
  * @note The fixed-size stack should be initialized by the pile_fixe_initialiser() function before calling this function.
  * @note The variable pointed by p_element should have enough memory to accommodate the popped element.
  */
-int pile_fixe_depiler(pile_fixe_t *pile, element_t *p_element)
+int pile_fixe_depiler(pile_fixe_t* pile, element_t* p_element)
 {
     if (pile_fixe_est_vide(pile))
         return -1;
@@ -91,7 +91,7 @@ int pile_fixe_depiler(pile_fixe_t *pile, element_t *p_element)
  *
  * @note Cette fonction ne modifie pas la pile fixe.
  */
-void pile_fixe_afficher(const pile_fixe_t *pile)
+void pile_fixe_afficher(const pile_fixe_t* pile)
 {
     for (int i = pile->sommet; i >= 0; i--)
         printf("| %d ", pile->pile[i]);
@@ -105,7 +105,7 @@ void pile_fixe_afficher(const pile_fixe_t *pile)
  *
  * @param pile A pointer to the pile_variable_t structure to be initialized.
  */
-int pile_variable_initialiser(pile_variable_t *pile)
+int pile_variable_initialiser(pile_variable_t* pile)
 {
     pile->sommet = -1;
     pile->taille = PAS_ALLOCATION;
@@ -115,7 +115,7 @@ int pile_variable_initialiser(pile_variable_t *pile)
     return 0;
 }
 
-int pile_variable_est_vide(const pile_variable_t *pile)
+int pile_variable_est_vide(const pile_variable_t* pile)
 {
     return pile->sommet == -1 ? 1 : 0;
 }
@@ -126,10 +126,11 @@ int pile_variable_est_vide(const pile_variable_t *pile)
  * @param pile The variable stack.
  * @param element The element to be pushed onto the stack.
  */
-int pile_variable_empiler(pile_variable_t *pile, element_t const element)
+int pile_variable_empiler(pile_variable_t* pile, element_t const element)
 {
     if (pile->sommet >= pile->taille - 1)
-    { // If the stack is full
+    {
+        // If the stack is full
         pile->taille += PAS_ALLOCATION; // Increase the stack size
         pile->pile = realloc(pile->pile, sizeof(element_t) * pile->taille); // Reallocate memory
         if (!pile->pile) return -1; // Fail to allocate memory
@@ -149,14 +150,15 @@ int pile_variable_empiler(pile_variable_t *pile, element_t const element)
  * @param pile   Pointer to the stack structure.
  * @param p_element Pointer to the variable to store the depiled element.
  */
-int pile_variable_depiler(pile_variable_t *pile, element_t *p_element)
+int pile_variable_depiler(pile_variable_t* pile, element_t* p_element)
 {
     if (pile_variable_est_vide(pile)) return -1; // The stack is empty
 
     *p_element = pile->pile[pile->sommet--]; // Pop the element
 
     if (pile->sommet < pile->taille - PAS_ALLOCATION)
-    { // If the number of elements in the stack is smaller than the size of the stack by PAS_ALLOCATION
+    {
+        // If the number of elements in the stack is smaller than the size of the stack by PAS_ALLOCATION
         pile->taille -= PAS_ALLOCATION; // Decrease the size
         pile->pile = realloc(pile->pile, sizeof(element_t) * pile->taille); // Reallocate memory
     }
@@ -172,7 +174,7 @@ int pile_variable_depiler(pile_variable_t *pile, element_t *p_element)
  *
  * @param pile La pile de variables à afficher.
  */
-void pile_variable_afficher(const pile_variable_t *pile)
+void pile_variable_afficher(const pile_variable_t* pile)
 {
     for (int i = pile->sommet; i >= 0; i--)
         printf("| %d ", pile->pile[i]);
@@ -195,7 +197,7 @@ void pile_variable_afficher(const pile_variable_t *pile)
  *
  * @see pile_variable_t
  */
-void pile_variable_detruire(pile_variable_t *pile)
+void pile_variable_detruire(pile_variable_t* pile)
 {
     free(pile->pile);
     pile->pile = NULL;
@@ -211,7 +213,7 @@ void pile_variable_detruire(pile_variable_t *pile)
  *
  * @param file A pointer to the file_fixe_t structure to be initialized.
  */
-void file_fixe_initialiser(file_fixe_t *file)
+void file_fixe_initialiser(file_fixe_t* file)
 {
     file->head = -1;
     file->tail = 0;
@@ -223,7 +225,7 @@ void file_fixe_initialiser(file_fixe_t *file)
  * @param file The file to check.
  * @return True if the file is empty, false otherwise.
  */
-int file_fixe_est_vide(const file_fixe_t *file)
+int file_fixe_est_vide(const file_fixe_t* file)
 {
     return file->head == -1 ? 1 : 0;
 }
@@ -237,7 +239,7 @@ int file_fixe_est_vide(const file_fixe_t *file)
  * @param file A pointer to the file_fixe_t structure representing the fixed-size file.
  * @param element The element to be enqueued into the file.
  */
-int file_fixe_enfiler(file_fixe_t *file, element_t const element)
+int file_fixe_enfiler(file_fixe_t* file, element_t const element)
 {
     if (file->tail == TAILLE_FILE)
         return -1;
@@ -250,7 +252,7 @@ int file_fixe_enfiler(file_fixe_t *file, element_t const element)
     return 0;
 }
 
-int file_fixe_defiler(file_fixe_t *file, element_t *p_element)
+int file_fixe_defiler(file_fixe_t* file, element_t* p_element)
 {
     if (file_fixe_est_vide(file))
         return -1;
@@ -258,7 +260,8 @@ int file_fixe_defiler(file_fixe_t *file, element_t *p_element)
     *p_element = file->file[file->head++];
 
     if (file->head == file->tail)
-    { // The queue is empty
+    {
+        // The queue is empty
         file->head = -1;
         file->tail = 0;
     }
@@ -270,7 +273,7 @@ int file_fixe_defiler(file_fixe_t *file, element_t *p_element)
  * @file queue_and_stack_operations.h
  * @brief Documentation for the file_fixe_afficher function.
  */
-void file_fixe_afficher(const file_fixe_t *file)
+void file_fixe_afficher(const file_fixe_t* file)
 {
     for (int i = file->head; i < file->tail; i++)
         printf("| %d ", file->file[i]);
@@ -285,12 +288,12 @@ void file_fixe_afficher(const file_fixe_t *file)
  *
  * @param file A pointer to the file_variable_t structure.
  */
-int file_variable_initialiser(file_variable_t *file)
+int file_variable_initialiser(file_variable_t* file)
 {
     file->taille = TAILLE_FILE;
     file->head = -1;
     file->tail = 0;
-    file->file = (element_t *) malloc(sizeof(element_t) * file->taille);
+    file->file = (element_t *)malloc(sizeof(element_t) * file->taille);
     if (!file->file) return -1; // Fail to allocate memory
 
     return 0;
@@ -304,7 +307,7 @@ int file_variable_initialiser(file_variable_t *file)
  * @param file The file variable to check.
  * @return True if the file variable is empty, False otherwise.
  */
-int file_variable_est_vide(const file_variable_t *file)
+int file_variable_est_vide(const file_variable_t* file)
 {
     return file->head == -1 ? 1 : 0;
 }
@@ -317,12 +320,13 @@ int file_variable_est_vide(const file_variable_t *file)
  * @param file The file variable to enfile the element into.
  * @param element The element to enfile.
  */
-int file_variable_enfiler(file_variable_t *file, element_t const element)
+int file_variable_enfiler(file_variable_t* file, element_t const element)
 {
     if (file->tail == file->taille)
-    {   // if the queue is full
+    {
+        // if the queue is full
         file->taille += PAS_ALLOCATION; // increase the size
-        file->file = (element_t *) realloc(file->file, sizeof(element_t) * file->taille); // reallocate memory
+        file->file = (element_t *)realloc(file->file, sizeof(element_t) * file->taille); // reallocate memory
         if (!file->file) return -1; // Fail to allocate memory
     }
 
@@ -341,7 +345,7 @@ int file_variable_enfiler(file_variable_t *file, element_t const element)
  * Defiling a file variable means to manipulate its contents based on the element, typically by removing
  * certain parts or modifying their values.
  */
-int file_variable_defiler(file_variable_t *file, element_t *p_element)
+int file_variable_defiler(file_variable_t* file, element_t* p_element)
 {
     if (file_variable_est_vide(file))
         return -1;
@@ -349,15 +353,18 @@ int file_variable_defiler(file_variable_t *file, element_t *p_element)
     *p_element = file->file[file->head++];
 
     if (file->head == file->tail)
-    { // The queue is empty
+    {
+        // The queue is empty
         file->head = -1;
         file->tail = 0;
         file->taille = TAILLE_FILE;
-        file->file = (element_t *) realloc(file->file, sizeof(element_t) * file->taille);
-    } else if (file->tail - file->head < file->taille - PAS_ALLOCATION)
-    {   // if the empty space is bigger than PAS_ALLOCATION
+        file->file = (element_t *)realloc(file->file, sizeof(element_t) * file->taille);
+    }
+    else if (file->tail - file->head < file->taille - PAS_ALLOCATION)
+    {
+        // if the empty space is bigger than PAS_ALLOCATION
         file->taille -= PAS_ALLOCATION; // decrease the size
-        file->file = (element_t *) realloc(file->file, sizeof(element_t) * file->taille); // reallocate memory
+        file->file = (element_t *)realloc(file->file, sizeof(element_t) * file->taille); // reallocate memory
     }
 
     return 0;
@@ -373,7 +380,7 @@ int file_variable_defiler(file_variable_t *file, element_t *p_element)
  * @param file Pointer to the file_variable to be displayed.
  * @return void
  */
-void file_variable_afficher(const file_variable_t *file)
+void file_variable_afficher(const file_variable_t* file)
 {
     for (int i = file->head; i < file->tail; i++)
         printf("| %d ", file->file[i]);
@@ -389,7 +396,7 @@ void file_variable_afficher(const file_variable_t *file)
  *
  * @param file A pointer to the file_variable_t object to destroy.
  */
-void file_variable_detruire(file_variable_t *file)
+void file_variable_detruire(file_variable_t* file)
 {
     free(file->file);
     file->file = NULL;
@@ -408,7 +415,6 @@ void file_variable_detruire(file_variable_t *file)
  */
 void test_pile_fixe(void)
 {
-
     pile_fixe_t pile;
 
     pile_fixe_initialiser(&pile);
@@ -460,7 +466,6 @@ void test_pile_fixe(void)
  */
 void test_pile_variable(void)
 {
-
     pile_variable_t pile;
 
     pile_variable_initialiser(&pile);
@@ -519,7 +524,6 @@ void test_pile_variable(void)
  */
 void test_file_fixe(void)
 {
-
     file_fixe_t file;
 
     file_fixe_initialiser(&file);
@@ -594,7 +598,6 @@ void test_file_fixe(void)
  */
 void test_file_variable(void)
 {
-
     file_variable_t file;
 
     file_variable_initialiser(&file);

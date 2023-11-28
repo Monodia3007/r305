@@ -33,7 +33,7 @@ ssize_t copy_content(int const source, int const destination, ssize_t size)
     while (size > 0)
     {
         char buffer[1024];
-        ssize_t const bytes_to_read = (int) sizeof(buffer) < size ? (int) sizeof(buffer) : size;
+        ssize_t const bytes_to_read = (int)sizeof(buffer) < size ? (int)sizeof(buffer) : size;
         ssize_t const read_bytes = read(source, buffer, bytes_to_read);
         if (read_bytes < 0)
         {
@@ -117,7 +117,7 @@ ssize_t extract_file(int const fd_archive)
  *
  * @return The number of files extracted from the archive, or -1 in case of errors.
  */
-uint32_t extract_archive(const char *archive)
+uint32_t extract_archive(const char* archive)
 {
     int const fd = open(archive, O_RDONLY);
     if (fd == -1)
@@ -155,7 +155,7 @@ uint32_t extract_archive(const char *archive)
  *
  * @return 0 on successful completion, otherwise it returns 1.
  */
-int run_unarchiver(int const argc, char **argv)
+int run_unarchiver(int const argc, char** argv)
 {
     if (argc != 2)
     {

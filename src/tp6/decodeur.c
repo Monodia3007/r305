@@ -36,10 +36,11 @@ char convertir_inverse(char const valeur)
  * @param destination A pointer to the address where the decoded block should be written.
  * @param taille_source Size of the encoded block.
  */
-void decoder_bloc(const char *source, char *destination, int const taille_source)
+void decoder_bloc(const char* source, char* destination, int const taille_source)
 {
     unsigned char bloc[4];
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         bloc[i] = source[i] == '=' ? 0 : convertir_inverse(source[i]);
     }
     destination[0] = bloc[0] << 2 | bloc[1] >> 4;
@@ -62,17 +63,20 @@ int decoder_fichier(int const source, int const destination)
     char buffer_in[4];
     char buffer_out[3];
 
-    while ((lus = read(source, &buffer_in, 4)) > 0) {
+    while ((lus = read(source, &buffer_in, 4)) > 0)
+    {
         decoder_bloc(buffer_in, buffer_out, lus);
         int toWrite = lus - 1;
-        if (buffer_in[lus-1] == '=') --toWrite;
-        if (buffer_in[lus-2] == '=') --toWrite;
-        if (write(destination, &buffer_out, toWrite) != toWrite) {
+        if (buffer_in[lus - 1] == '=') --toWrite;
+        if (buffer_in[lus - 2] == '=') --toWrite;
+        if (write(destination, &buffer_out, toWrite) != toWrite)
+        {
             perror("Erreur lors de l'ecriture");
             return -1;
         }
     }
-    if (lus < 0) {
+    if (lus < 0)
+    {
         perror("Erreur lors de la lecture");
         return -1;
     }
@@ -89,27 +93,33 @@ int decoder_fichier(int const source, int const destination)
  * @param argv An array of arguments provided to the program.
  * @return Returns 0 on successful execution and 1 in case of any errors.
  */
-int run_decodeur(int const argc, char *argv[]) {
-    int sourcefd = 0;  // stdin
-    int destfd = 1;   // stdout
+int run_decodeur(int const argc, char* argv[])
+{
+    int sourcefd = 0; // stdin
+    int destfd = 1; // stdout
 
-    if (argc > 1) {
+    if (argc > 1)
+    {
         sourcefd = open(argv[1], O_RDONLY);
-        if (sourcefd < 0) {
+        if (sourcefd < 0)
+        {
             perror("Erreur lors de l'ouverture du fichier source");
             return 1;
         }
     }
 
-    if (argc > 2) {
+    if (argc > 2)
+    {
         destfd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-        if (destfd < 0) {
+        if (destfd < 0)
+        {
             perror("Erreur lors de l'ouverture du fichier destination");
             return 1;
         }
     }
 
-    if (decoder_fichier(sourcefd, destfd) < 0) {
+    if (decoder_fichier(sourcefd, destfd) < 0)
+    {
         return 1;
     }
 
