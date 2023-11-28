@@ -5,11 +5,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <pwd.h>
 #include "shell.h"
 #include "ligne_commande.h"
+
+#if defined(__linux__)
+#include <linux/limits.h>
+#elif defined(__APPLE__)
+#include <sys/syslimits.h>
+#else
+    #include <limits.h>
+#endif
 
 /**
  * Display the shell prompt with username, hostname and current directory.
@@ -48,6 +57,7 @@ void display_prompt()
     replace_home_with_tilde(cwd);
 
     // Display the prompt
+    printf("\033[35m");
     printf("%s@%s:%s> ", username, hostname, cwd);
     fflush(stdout); // ensure the prompt gets displayed immediately
 }
@@ -62,12 +72,14 @@ void replace_home_with_tilde(char *currentDirectory)
     struct passwd const *pw = getpwuid(getuid());
     const char *homeDirectory = pw->pw_dir;
 
+
     // Convert absolute path to home-relative path
     if (strncmp(currentDirectory, homeDirectory, strlen(homeDirectory)) == 0) // if current directory starts with home directory
     {
-        sprintf(currentDirectory, "~%s", &currentDirectory[strlen(homeDirectory)]);
+        char tempDirectory[PATH_MAX];
+        sprintf(tempDirectory, "~%s", &currentDirectory[strlen(homeDirectory)]);
+        strcpy(currentDirectory, tempDirectory);
     }
-
 }
 
 /**
@@ -79,7 +91,6 @@ void replace_home_with_tilde(char *currentDirectory)
 void execute_command_line(char*** const commands, int const commandCount, int const backgroundFlag){
     int in = 0;
     int out;
-
 
     for (int i = 0; i < commandCount; i++){
         // Gérer la commande 'cd' dans le processus parent
@@ -156,7 +167,6 @@ int launch_command(int const in, int const out, const char *command, char ** arg
  */
 void run_shell()
 {
-    printf("\033[35m");
     int flag, nb;
 
     while (1) {  // Loop forever until we hit a break statement

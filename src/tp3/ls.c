@@ -14,6 +14,7 @@
 #include <grp.h>
 #include <pwd.h>
 #include <sys/wait.h>
+#include <inttypes.h>
 
 #if defined(__linux__)
 #include <linux/limits.h>
@@ -114,7 +115,7 @@ int afficher_infos(const char* chemin)
         printf("%4d ", infos.st_gid); // Print group ID
     }
 
-    printf("%5lld ", infos.st_size); // Print file size
+    printf("%5" PRIo64 " ", infos.st_size);  // Print file size
     printf("%s\n", chemin); // Print file path
 
     return 0;
