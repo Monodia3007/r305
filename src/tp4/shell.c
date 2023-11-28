@@ -59,6 +59,10 @@ void execute_ligne_commande(char*** commandes, int const nb, int const arriere_p
                     perror("chdir() error");
                 }
             }
+            else
+            {
+                chdir(getenv("HOME")); // go to home directory
+            }
             continue;
         }
 
