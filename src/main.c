@@ -21,38 +21,47 @@ int main(int const argc, char* argv[])
     {
         run_infinite_malloc();
     }
+
     else if (strcmp(argv[1], "-infinite_fork") == 0)
     {
         run_infinite_fork();
     }
+
     else if (strcmp(argv[1], "-queue_and_stack_operations") == 0)
     {
         run_queue_and_stack_operations();
     }
+
     else if (strcmp(argv[1], "-archiver") == 0)
     {
         run_archiver(argc - 1, argv + 1);
     }
+
     else if (strcmp(argv[1], "-unarchiver") == 0)
     {
         run_unarchiver(argc - 1, argv + 1);
     }
+
     else if (strcmp(argv[1], "-ls") == 0)
     {
         run_ls(argc - 1, argv + 1);
     }
+
     else if (strcmp(argv[1], "-shell") == 0)
     {
         run_shell();
     }
+
     else if (strcmp(argv[1], "-encodeur") == 0)
     {
         run_encodeur(argc - 1, argv + 1);
     }
+
     else if (strcmp(argv[1], "-decodeur") == 0)
     {
         run_decodeur(argc - 1, argv + 1);
     }
+
     else
     {
         printf("Invalid option\n");
