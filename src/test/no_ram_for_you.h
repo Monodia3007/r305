@@ -1,9 +1,6 @@
 #ifndef R305_NO_RAM_FOR_YOU_H
 #define R305_NO_RAM_FOR_YOU_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
 /**
  * @brief Program to demonstrate infinite memory allocation using malloc
  *
