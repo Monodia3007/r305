@@ -28,7 +28,7 @@ void display_prompt()
     char hostname[1024], cwd[PATH_MAX];
 
     // Get user name
-    char *username = getenv("USER");
+    char* username = getenv("USER");
     if (username == NULL)
     {
         printf("Error getting USERNAME.\n");
@@ -43,7 +43,7 @@ void display_prompt()
     }
 
     // Remove '.local' from hostname
-    char *hostExtension = strstr(hostname, ".local");
+    char* hostExtension = strstr(hostname, ".local");
     if (hostExtension) *hostExtension = '\0';
 
     // Get current working directory
@@ -66,15 +66,16 @@ void display_prompt()
  * Replaces the home directory path with '~'
  * @param currentDirectory The current directory string
  */
-void replace_home_with_tilde(char *currentDirectory)
+void replace_home_with_tilde(char* currentDirectory)
 {
     // Get user home directory
-    struct passwd const *pw = getpwuid(getuid());
-    const char *homeDirectory = pw->pw_dir;
+    struct passwd const* pw = getpwuid(getuid());
+    const char* homeDirectory = pw->pw_dir;
 
 
     // Convert absolute path to home-relative path
-    if (strncmp(currentDirectory, homeDirectory, strlen(homeDirectory)) == 0) // if current directory starts with home directory
+    if (strncmp(currentDirectory, homeDirectory, strlen(homeDirectory)) == 0)
+    // if current directory starts with home directory
     {
         char tempDirectory[PATH_MAX];
         sprintf(tempDirectory, "~%s", &currentDirectory[strlen(homeDirectory)]);
@@ -88,18 +89,25 @@ void replace_home_with_tilde(char *currentDirectory)
  * @param commandCount The number of command
  * @param backgroundFlag Flag to execute in background
  */
-void execute_command_line(char*** const commands, int const commandCount, int const backgroundFlag){
+void execute_command_line(char*** const commands, int const commandCount, int const backgroundFlag)
+{
     int in = 0;
     int out;
 
-    for (int i = 0; i < commandCount; i++){
+    for (int i = 0; i < commandCount; i++)
+    {
         // Gérer la commande 'cd' dans le processus parent
-        if (strcmp(commands[i][0], "cd") == 0){
-            if (commands[i][1] != NULL){
-                if(chdir(commands[i][1]) != 0){
+        if (strcmp(commands[i][0], "cd") == 0)
+        {
+            if (commands[i][1] != NULL)
+            {
+                if (chdir(commands[i][1]) != 0)
+                {
                     perror("chdir() error");
                 }
-            } else {
+            }
+            else
+            {
                 chdir(getenv("HOME")); // aller au répertoire d'accueil
             }
             continue;
@@ -108,20 +116,24 @@ void execute_command_line(char*** const commands, int const commandCount, int co
         int p[2];
         pipe(p);
 
-        if (i == commandCount - 1){
+        if (i == commandCount - 1)
+        {
             out = 1;
-        } else {
+        }
+        else
+        {
             out = p[1];
         }
 
         pid_t const pid = launch_command(in, out, commands[i][0], commands[i]);
 
-        if(in != 0) close(in);
-        if(out != 1) close(out);
+        if (in != 0) close(in);
+        if (out != 1) close(out);
 
         in = p[0];
 
-        if (!backgroundFlag){
+        if (!backgroundFlag)
+        {
             // attendre la fin de l'exécution de la commande si elle n'est pas exécutée en arrière-plan
             int status;
             waitpid(pid, &status, 0);
@@ -137,25 +149,34 @@ void execute_command_line(char*** const commands, int const commandCount, int co
  * @param argv The arguments for the command
  * @return Process ID of created process
  */
-int launch_command(int const in, int const out, const char *command, char ** argv){
+int launch_command(int const in, int const out, const char* command, char** argv)
+{
     pid_t const pid = fork(); // on crée un nouveau processus par clonage du processus courant
 
-    if (pid < 0){  // le fork a échoué
+    if (pid < 0)
+    {
+        // le fork a échoué
         return -1;
     }
-     if (pid == 0){ // ici on se trouve dans le processus fils
-        if (in != 0){ // vérifier s'il faut rediriger l'entrée standard
+    if (pid == 0)
+    {
+        // ici on se trouve dans le processus fils
+        if (in != 0)
+        {
+            // vérifier s'il faut rediriger l'entrée standard
             dup2(in, 0); // remplace l'entrée standard (0) par le descripteur de fichier "in"
-            close(in);  // fermer le descripteur de fichier "in" car on n'en a plus besoin
+            close(in); // fermer le descripteur de fichier "in" car on n'en a plus besoin
         }
 
-        if (out != 1){ // vérifier s'il faut rediriger la sortie standard
+        if (out != 1)
+        {
+            // vérifier s'il faut rediriger la sortie standard
             dup2(out, 1); // remplace la sortie standard (1) par le descripteur de fichier "out"
-            close(out);  // fermer le descripteur de fichier "out" car on n'en a plus besoin
+            close(out); // fermer le descripteur de fichier "out" car on n'en a plus besoin
         }
 
         execvp(command, argv); // exécute la commande "com" avec le tableau d'arguments "argv"
-        perror("execvp");  // s'exécute seulement si execvp échoue
+        perror("execvp"); // s'exécute seulement si execvp échoue
         _exit(1);
     }
 
@@ -169,25 +190,29 @@ void run_shell()
 {
     int flag, nb;
 
-    while (1) {  // Loop forever until we hit a break statement
+    while (1)
+    {
+        // Loop forever until we hit a break statement
         display_prompt();
 
-        char ***commands = ligne_commande(&flag, &nb);
+        char*** commands = ligne_commande(&flag, &nb);
 
         // Check if ligne_commande returned NULL (error or no command entered)
-        if (commands == NULL) {
+        if (commands == NULL)
+        {
             printf("An error occurred while reading commands.\n");
             continue;
         }
 
         // If the first word of the first command is "exit", exit the shell loop
-        if (commands[0][0] && strcmp(commands[0][0], "exit") == 0) {
-            libere(commands);  // Free the memory allocated by ligne_commande
+        if (commands[0][0] && strcmp(commands[0][0], "exit") == 0)
+        {
+            libere(commands); // Free the memory allocated by ligne_commande
             break;
         }
 
         execute_command_line(commands, nb, flag == 1 ? 1 : 0);
 
-        libere(commands);  // Free the memory allocated by ligne_commande
+        libere(commands); // Free the memory allocated by ligne_commande
     }
 }

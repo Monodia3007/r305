@@ -50,7 +50,7 @@ _Noreturn void run_infinite_malloc(void)
     {
         ram_consumed += 1;
         void* ptr = malloc(1024);
-        printf("%s", (char*)ptr);
+        printf("%s", (char *)ptr);
         printf("%dMio\n", ram_consumed);
     }
 }
@@ -76,6 +76,6 @@ _Noreturn void run_infinite_fork(void)
     while (1)
     {
         int const pid = fork();
-        printf("%d\n",pid);
+        printf("%d\n", pid);
     }
 }
