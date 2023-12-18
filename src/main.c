@@ -20,8 +20,8 @@ int main(int const argc, char* argv[]) {
                 {"unarchiver",                  required_argument, 0, 'e'},
                 {"ls",                          required_argument, 0, 'f'},
                 {"shell",                       no_argument,       0, 'g'},
-                {"encodeur",                    optional_argument, 0, 'h'},
-                {"decodeur",                    optional_argument, 0, 'i'},
+                {"encoder",                    optional_argument, 0, 'h'},
+                {"decoder",                    optional_argument, 0, 'i'},
                 {0, 0, 0, 0}
         };
 
