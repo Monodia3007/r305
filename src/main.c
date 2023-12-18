@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <getopt.h>
 #include "test/no_ram_for_you.h"
 #include "tp1/queue_and_stack_operations.h"
 #include "tp2/archiver.h"
@@ -9,63 +9,67 @@
 #include "tp6/encodeur.h"
 #include "tp6/decodeur.h"
 
-int main(int const argc, char* argv[])
-{
-    if (argc < 2)
-    {
-        printf("Please provide an argument to run specific module\n");
-        return 1;
-    }
+int main(int const argc, char* argv[]) {
+    int c;
+    while (1) {
+        static struct option long_options[] = {
+                {"infinite_malloc",             no_argument,       0, 'a'},
+                {"infinite_fork",               no_argument,       0, 'b'},
+                {"queue_and_stack_operations",  no_argument,       0, 'c'},
+                {"archiver",                    required_argument, 0, 'd'},
+                {"unarchiver",                  required_argument, 0, 'e'},
+                {"ls",                          required_argument, 0, 'f'},
+                {"shell",                       no_argument,       0, 'g'},
+                {"encodeur",                    optional_argument, 0, 'h'},
+                {"decodeur",                    optional_argument, 0, 'i'},
+                {0, 0, 0, 0}
+        };
 
-    if (strcmp(argv[1], "-infinite_malloc") == 0)
-    {
-        run_infinite_malloc();
-    }
+        int option_index = 0;
+        c = getopt_long(argc, argv, "abcdefghi:?", long_options, &option_index);
+        if (c == -1)
+            break;
 
-    else if (strcmp(argv[1], "-infinite_fork") == 0)
-    {
-        run_infinite_fork();
-    }
+        switch (c) {
+            case 'a':
+                run_infinite_malloc();
+                break;
 
-    else if (strcmp(argv[1], "-queue_and_stack_operations") == 0)
-    {
-        run_queue_and_stack_operations();
-    }
+            case 'b':
+                run_infinite_fork();
 
-    else if (strcmp(argv[1], "-archiver") == 0)
-    {
-        run_archiver(argc - 1, argv + 1);
-    }
+            case 'c':
+                run_queue_and_stack_operations();
+                break;
 
-    else if (strcmp(argv[1], "-unarchiver") == 0)
-    {
-        run_unarchiver(argc - 1, argv + 1);
-    }
+            case 'd':
+                run_archiver(argc - 1, argv + 1);
+                break;
 
-    else if (strcmp(argv[1], "-ls") == 0)
-    {
-        run_ls(argc - 1, argv + 1);
-    }
+            case 'e':
+                run_unarchiver(argc - 1, argv + 1);
+                break;
 
-    else if (strcmp(argv[1], "-shell") == 0)
-    {
-        run_shell();
-    }
+            case 'f':
+                run_ls(argc - 1, argv + 1);
+                break;
 
-    else if (strcmp(argv[1], "-encodeur") == 0)
-    {
-        run_encodeur(argc - 1, argv + 1);
-    }
+            case 'g':
+                run_shell();
+                break;
 
-    else if (strcmp(argv[1], "-decodeur") == 0)
-    {
-        run_decodeur(argc - 1, argv + 1);
-    }
+            case 'h':
+                run_encodeur(argc - 1, argv + 1);
+                break;
 
-    else
-    {
-        printf("Invalid option\n");
-        return 1;
+            case 'i':
+                run_decodeur(argc - 1, argv + 1);
+                break;
+
+            default:
+                printf("Invalid option\n");
+                return 1;
+        }
     }
 
     return 0;
