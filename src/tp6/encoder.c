@@ -44,7 +44,8 @@ void encoder_bloc(const char *source, int const taille_source, char *destination
     bloc[2] = taille_source > 1 ? convertir((source[1] & 0xF) << 2 | source[2] >> 6) : '=';
     bloc[3] = taille_source > 2 ? convertir(source[2] & 0x3F) : '=';
 
-    for(int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         destination[i] = bloc[i];
     }
 }
@@ -65,14 +66,17 @@ int encoder_fichier(int const source, int const destination)
     char buffer_in[3];
     char buffer_out[4];
 
-    while ((lus = read(source, &buffer_in, 3)) > 0) {
+    while ((lus = read(source, &buffer_in, 3)) > 0)
+    {
         encoder_bloc(buffer_in, lus, buffer_out);
-        if (write(destination, &buffer_out, 4) != 4) {
+        if (write(destination, &buffer_out, 4) != 4)
+        {
             perror("Erreur lors de l'ecriture");
             return -1;
         }
     }
-    if (lus < 0) {
+    if (lus < 0)
+    {
         perror("Erreur lors de la lecture");
         return -1;
     }
@@ -89,27 +93,33 @@ int encoder_fichier(int const source, int const destination)
  * @param argv An array of arguments.
  * @return Returns 0 on successful execution, and 1 on error.
  */
-int run_encodeur(int const argc, char *argv[]) {
+int run_encodeur(int const argc, char *argv[])
+{
     int sourcefd = 0;  // stdin
     int destfd = 1;   // stdout
 
-    if (argc > 1) {
+    if (argc > 1)
+    {
         sourcefd = open(argv[1], O_RDONLY);
-        if (sourcefd < 0) {
+        if (sourcefd < 0)
+        {
             perror("Erreur lors de l'ouverture du fichier source");
             return 1;
         }
     }
 
-    if (argc > 2) {
+    if (argc > 2)
+    {
         destfd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-        if (destfd < 0) {
+        if (destfd < 0)
+        {
             perror("Erreur lors de l'ouverture du fichier destination");
             return 1;
         }
     }
 
-    if (encoder_fichier(sourcefd, destfd) < 0) {
+    if (encoder_fichier(sourcefd, destfd) < 0)
+    {
         return 1;
     }
 

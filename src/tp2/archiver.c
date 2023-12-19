@@ -113,7 +113,7 @@ ssize_t archive_file(int const fd_archive, const char *file)
     close(fd);
 
     if (written == -1) return -1;
-    return written + (ssize_t) sizeof(file_name_size) + (ssize_t) file_name_size +(ssize_t) sizeof(compressed_size);
+    return written + (ssize_t) sizeof(file_name_size) + (ssize_t) file_name_size + (ssize_t) sizeof(compressed_size);
 }
 
 

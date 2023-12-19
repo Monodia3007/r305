@@ -30,7 +30,7 @@ void replace_home_with_tilde(char *currentDirectory);
  * @param commandCount Array size (i.e., number of commands).
  * @param backgroundFlag 1 if commands are to be run in background, 0 otherwise.
  */
-void execute_command_line(char*** commands, int commandCount, int backgroundFlag);
+void execute_command_line(char ***commands, int commandCount, int backgroundFlag);
 
 /**
  * @function launch_command
@@ -42,7 +42,7 @@ void execute_command_line(char*** commands, int commandCount, int backgroundFlag
  * @param argv Array of arguments for the command.
  * @return The process ID of the newly created process.
  */
-int launch_command(int in, int out, const char *command, char ** argv);
+int launch_command(int in, int out, const char *command, char **argv);
 
 /**
  * @function run_shell

@@ -15,20 +15,22 @@
  *
  * @brief Main function for the program
  */
-int main(int const argc, char* argv[]) {
+int main(int const argc, char *argv[])
+{
     int c;
-    while (1) {
+    while (1)
+    {
         static struct option long_options[] = {
-                {"infinite_malloc",             no_argument,       0, 'a'},
-                {"infinite_fork",               no_argument,       0, 'c'},
-                {"queue_and_stack_operations",  no_argument,       0, 'd'},
-                {"archiver",                    required_argument, 0, 'e'},
-                {"unarchiver",                  required_argument, 0, 'f'},
-                {"ls",                          required_argument, 0, 'g'},
-                {"shell",                       no_argument,       0, 'h'},
-                {"encoder",                     optional_argument, 0, 'j'},
-                {"decoder",                     optional_argument, 0, 'k'},
-                {"modif_bmp",                   required_argument, 0, 'l'},
+                {"infinite_malloc", no_argument, 0, 'a'},
+                {"infinite_fork", no_argument, 0, 'c'},
+                {"queue_and_stack_operations", no_argument, 0, 'd'},
+                {"archiver", required_argument, 0, 'e'},
+                {"unarchiver", required_argument, 0, 'f'},
+                {"ls", required_argument, 0, 'g'},
+                {"shell", no_argument, 0, 'h'},
+                {"encoder", optional_argument, 0, 'j'},
+                {"decoder", optional_argument, 0, 'k'},
+                {"modif_bmp", required_argument, 0, 'l'},
                 {0, 0, 0, 0}
         };
 
@@ -37,7 +39,8 @@ int main(int const argc, char* argv[]) {
         if (c == -1)
             break;
 
-        switch (c) {
+        switch (c)
+        {
             case 'a':
                 run_infinite_malloc();
                 break;

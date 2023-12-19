@@ -19,9 +19,11 @@
 #if defined(__linux__)
 #include <linux/limits.h>
 #elif defined(__APPLE__)
+
 #include <sys/syslimits.h>
+
 #else
-    #include <limits.h>
+#include <limits.h>
 #endif
 
 #ifndef PATH_MAX  // If PATH_MAX is not defined, they define it:
@@ -62,7 +64,7 @@ void print_octal_permissions(mode_t const mode)
  * @param chemin The path of the file or directory.
  * @return Returns 0 if successful; otherwise, it returns -1.
  */
-int afficher_infos(const char* chemin)
+int afficher_infos(const char *chemin)
 {
     struct stat infos;
     if (stat(chemin, &infos) == -1)
@@ -75,16 +77,13 @@ int afficher_infos(const char* chemin)
     if (S_ISREG(infos.st_mode))
     {
         type = '-';
-    }
-    else if (S_ISDIR(infos.st_mode))
+    } else if (S_ISDIR(infos.st_mode))
     {
         type = 'd';
-    }
-    else if (S_ISLNK(infos.st_mode))
+    } else if (S_ISLNK(infos.st_mode))
     {
         type = 'l';
-    }
-    else
+    } else
     {
         type = '?';
     }
@@ -94,14 +93,13 @@ int afficher_infos(const char* chemin)
     // Use custom function to print permissions:
     print_octal_permissions(infos.st_mode);
 
-    struct passwd const* pwd = getpwuid(infos.st_uid);
-    struct group const* grp = getgrgid(infos.st_gid);
+    struct passwd const *pwd = getpwuid(infos.st_uid);
+    struct group const *grp = getgrgid(infos.st_gid);
 
     if (pwd != NULL)
     {
         printf("%15s ", pwd->pw_name); // Print user name
-    }
-    else
+    } else
     {
         printf("%4d ", infos.st_uid); // Print user ID
     }
@@ -109,8 +107,7 @@ int afficher_infos(const char* chemin)
     if (grp != NULL)
     {
         printf("%10s ", grp->gr_name); // Print group name
-    }
-    else
+    } else
     {
         printf("%4d ", infos.st_gid); // Print group ID
     }
@@ -130,21 +127,21 @@ int afficher_infos(const char* chemin)
  * @param chemin The path of the directory.
  * @return Returns 0 if successful; otherwise, it returns -1.
  */
-int afficher_repertoire(const char* chemin)
+int afficher_repertoire(const char *chemin)
 {
-    DIR* rep = opendir(chemin);
+    DIR *rep = opendir(chemin);
     if (rep == NULL)
     {
         perror(chemin);
         return -1;
     }
 
-    struct dirent* entree;
+    struct dirent *entree;
 
     int color_index = 0;
 
     // Define an array of color codes
-    const char* colors[] = {"\x1B[31m", "\x1B[33m", "\x1B[32m", "\x1B[34m", "\x1B[35m"};
+    const char *colors[] = {"\x1B[31m", "\x1B[33m", "\x1B[32m", "\x1B[34m", "\x1B[35m"};
 
     while ((entree = readdir(rep)) != NULL)
     {
@@ -190,7 +187,7 @@ __attribute__((unused)) void traiter(void)
  * @param chemin The path of the directory to list.
  * @return Returns the PID of the child process if successful; otherwise, it returns -1.
  */
-int lancer_traitement(const char* chemin)
+int lancer_traitement(const char *chemin)
 {
     int const pid = fork();
 
@@ -224,7 +221,7 @@ int lancer_traitement(const char* chemin)
  * @param argv The argument vector.
  * @return Returns 0 if successful; otherwise, it returns 1.
  */
-int run_ls(int const argc, char* argv[])
+int run_ls(int const argc, char *argv[])
 {
     if (argc < 2)
     {
@@ -232,7 +229,7 @@ int run_ls(int const argc, char* argv[])
         return 1;
     }
 
-    int* pids = malloc((argc - 1) * sizeof(int));
+    int *pids = malloc((argc - 1) * sizeof(int));
     for (int i = 1; i < argc; i++)
     {
         pids[i - 1] = lancer_traitement(argv[i]);

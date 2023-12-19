@@ -15,9 +15,11 @@
 #if defined(__linux__)
 #include <linux/limits.h>
 #elif defined(__APPLE__)
+
 #include <sys/syslimits.h>
+
 #else
-    #include <limits.h>
+#include <limits.h>
 #endif
 
 /**
@@ -28,7 +30,7 @@ void display_prompt()
     char hostname[1024], cwd[PATH_MAX];
 
     // Get username
-    char* username = getenv("USER");
+    char *username = getenv("USER");
     if (username == NULL)
     {
         printf("Error getting USERNAME.\n");
@@ -43,7 +45,7 @@ void display_prompt()
     }
 
     // Remove '.local' from hostname
-    char* hostExtension = strstr(hostname, ".local");
+    char *hostExtension = strstr(hostname, ".local");
     if (hostExtension) *hostExtension = '\0';
 
     // Get current working directory
@@ -66,16 +68,16 @@ void display_prompt()
  * Replaces the home directory path with '~'
  * @param currentDirectory The current directory string
  */
-void replace_home_with_tilde(char* currentDirectory)
+void replace_home_with_tilde(char *currentDirectory)
 {
     // Get user home directory
-    struct passwd const* pw = getpwuid(getuid());
-    const char* homeDirectory = pw->pw_dir;
+    struct passwd const *pw = getpwuid(getuid());
+    const char *homeDirectory = pw->pw_dir;
 
 
     // Convert absolute path to home-relative path
     if (strncmp(currentDirectory, homeDirectory, strlen(homeDirectory)) == 0)
-    // if current directory starts with home directory
+        // if current directory starts with home directory
     {
         char tempDirectory[PATH_MAX];
         sprintf(tempDirectory, "~%s", &currentDirectory[strlen(homeDirectory)]);
@@ -89,7 +91,7 @@ void replace_home_with_tilde(char* currentDirectory)
  * @param commandCount The number of command
  * @param backgroundFlag Flag to execute in background
  */
-void execute_command_line(char*** const commands, int const commandCount, int const backgroundFlag)
+void execute_command_line(char ***const commands, int const commandCount, int const backgroundFlag)
 {
     int in = 0;
     int out;
@@ -105,8 +107,7 @@ void execute_command_line(char*** const commands, int const commandCount, int co
                 {
                     perror("chdir() error");
                 }
-            }
-            else
+            } else
             {
                 chdir(getenv("HOME")); // aller au répertoire d'accueil
             }
@@ -119,8 +120,7 @@ void execute_command_line(char*** const commands, int const commandCount, int co
         if (i == commandCount - 1)
         {
             out = 1;
-        }
-        else
+        } else
         {
             out = p[1];
         }
@@ -149,7 +149,7 @@ void execute_command_line(char*** const commands, int const commandCount, int co
  * @param argv The arguments for the command
  * @return Process ID of created process
  */
-int launch_command(int const in, int const out, const char* command, char** argv)
+int launch_command(int const in, int const out, const char *command, char **argv)
 {
     pid_t const pid = fork(); // on crée un nouveau processus par clonage du processus courant
 
@@ -195,7 +195,7 @@ void run_shell()
         // Loop forever until we hit a break statement
         display_prompt();
 
-        char*** commands = ligne_commande(&flag, &nb);
+        char ***commands = ligne_commande(&flag, &nb);
 
         // Check if ligne_commande returned NULL (error or no command entered)
         if (commands == NULL)

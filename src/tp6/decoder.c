@@ -36,7 +36,7 @@ char convertir_inverse(char const valeur)
  * @param destination A pointer to the address where the decoded block should be written.
  * @param taille_source Size of the encoded block.
  */
-void decoder_bloc(const char* source, char* destination, int const taille_source)
+void decoder_bloc(const char *source, char *destination, int const taille_source)
 {
     unsigned char bloc[4];
     for (int i = 0; i < 4; i++)
@@ -93,7 +93,7 @@ int decoder_fichier(int const source, int const destination)
  * @param argv An array of arguments provided to the program.
  * @return Returns 0 on successful execution and 1 in case of any errors.
  */
-int run_decodeur(int const argc, char* argv[])
+int run_decodeur(int const argc, char *argv[])
 {
     int sourcefd = 0; // stdin
     int destfd = 1; // stdout

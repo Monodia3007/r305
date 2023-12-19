@@ -49,8 +49,8 @@ _Noreturn void run_infinite_malloc(void)
     while (1)
     {
         ram_consumed += 1;
-        void* ptr = malloc(1024);
-        printf("%s", (char *)ptr);
+        void *ptr = malloc(1024);
+        printf("%s", (char *) ptr);
         printf("%dMio\n", ram_consumed);
     }
 }
