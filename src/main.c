@@ -8,6 +8,7 @@
 #include "tp4_5/shell.h"
 #include "tp6/encoder.h"
 #include "tp6/decoder.h"
+#include "tp6/modif_bmp.h"
 
 /**
  * @file main.c
@@ -19,19 +20,20 @@ int main(int const argc, char* argv[]) {
     while (1) {
         static struct option long_options[] = {
                 {"infinite_malloc",             no_argument,       0, 'a'},
-                {"infinite_fork",               no_argument,       0, 'b'},
-                {"queue_and_stack_operations",  no_argument,       0, 'c'},
-                {"archiver",                    required_argument, 0, 'd'},
-                {"unarchiver",                  required_argument, 0, 'e'},
-                {"ls",                          required_argument, 0, 'f'},
-                {"shell",                       no_argument,       0, 'g'},
-                {"encoder",                    optional_argument, 0, 'h'},
-                {"decoder",                    optional_argument, 0, 'i'},
+                {"infinite_fork",               no_argument,       0, 'c'},
+                {"queue_and_stack_operations",  no_argument,       0, 'd'},
+                {"archiver",                    required_argument, 0, 'e'},
+                {"unarchiver",                  required_argument, 0, 'f'},
+                {"ls",                          required_argument, 0, 'g'},
+                {"shell",                       no_argument,       0, 'h'},
+                {"encoder",                     optional_argument, 0, 'j'},
+                {"decoder",                     optional_argument, 0, 'k'},
+                {"modif_bmp",                   required_argument, 0, 'l'},
                 {0, 0, 0, 0}
         };
 
         int option_index = 0;
-        c = getopt_long(argc, argv, "abcdefghi:?", long_options, &option_index);
+        c = getopt_long(argc, argv, "acdefghjkl:?", long_options, &option_index);
         if (c == -1)
             break;
 
@@ -40,35 +42,39 @@ int main(int const argc, char* argv[]) {
                 run_infinite_malloc();
                 break;
 
-            case 'b':
+            case 'c':
                 run_infinite_fork();
 
-            case 'c':
+            case 'd':
                 run_queue_and_stack_operations();
                 break;
 
-            case 'd':
+            case 'e':
                 run_archiver(argc - 1, argv + 1);
                 break;
 
-            case 'e':
+            case 'f':
                 run_unarchiver(argc - 1, argv + 1);
                 break;
 
-            case 'f':
+            case 'g':
                 run_ls(argc - 1, argv + 1);
                 break;
 
-            case 'g':
+            case 'h':
                 run_shell();
                 break;
 
-            case 'h':
+            case 'j':
                 run_encodeur(argc - 1, argv + 1);
                 break;
 
-            case 'i':
+            case 'k':
                 run_decodeur(argc - 1, argv + 1);
+                break;
+
+            case 'l':
+                run_modif_bmp(argc - 1, argv + 1);
                 break;
 
             default:
