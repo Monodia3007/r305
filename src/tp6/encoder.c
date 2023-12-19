@@ -2,7 +2,7 @@
 // Created by Lilith Camplin on 21/11/2023.
 //
 
-#include "encodeur.h"
+#include "encoder.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
