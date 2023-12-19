@@ -9,6 +9,11 @@
 #include "tp6/encodeur.h"
 #include "tp6/decodeur.h"
 
+/**
+ * @file main.c
+ *
+ * @brief Main function for the program
+ */
 int main(int const argc, char* argv[]) {
     int c;
     while (1) {
