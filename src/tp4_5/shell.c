@@ -27,7 +27,7 @@ void display_prompt()
 {
     char hostname[1024], cwd[PATH_MAX];
 
-    // Get user name
+    // Get username
     char* username = getenv("USER");
     if (username == NULL)
     {
@@ -35,7 +35,7 @@ void display_prompt()
         return;
     }
 
-    // Get host name
+    // Get hostname
     if (gethostname(hostname, sizeof(hostname)) != 0)
     {
         printf("Error getting HOSTNAME.\n");
