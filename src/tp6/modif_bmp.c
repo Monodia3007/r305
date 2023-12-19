@@ -4,8 +4,8 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <printf.h>
 #include <string.h>
+#include <stdio.h>
 #include "modif_bmp.h"
 
 int lire_deux_octets(int fd, uint16_t *val) {
