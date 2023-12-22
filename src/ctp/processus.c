@@ -32,7 +32,8 @@ int run_processus(void)
         _exit(EXIT_FAILURE);
     }
 
-    if(waitpid(pid_bonjour, NULL, 0) == -1){
+    if (waitpid(pid_bonjour, NULL, 0) == -1)
+    {
         perror("waitpid");
         return 1;
     }
@@ -50,7 +51,8 @@ int run_processus(void)
         _exit(EXIT_FAILURE);
     }
 
-    if(waitpid(pid_sleep, NULL, 0) == -1){
+    if (waitpid(pid_sleep, NULL, 0) == -1)
+    {
         perror("waitpid");
         return 1;
     }
