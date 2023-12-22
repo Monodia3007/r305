@@ -2,14 +2,15 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <libgen.h>
+#include <string.h>
 #include "filtre.h"
+
 
 #if defined(__linux__)
 #include <linux/limits.h>
 #elif defined(__APPLE__)
-
 #include <sys/syslimits.h>
-
 #else
 #include <limits.h>
 #endif
@@ -17,6 +18,22 @@
 #ifndef PATH_MAX  // If PATH_MAX is not defined, they define it:
 #define PATH_MAX 4096  // This is a common maximum limit
 #endif
+
+/**
+ * @brief Duplicates a string.
+ *
+ * This function creates a duplicate of the given string.
+ *
+ * @param src The source string to duplicate.
+ *
+ * @return The newly allocated duplicate of the source string, or NULL if the memory allocation failed.
+ */
+char* custom_strdup(const char* src) {
+    char* dest = malloc(strlen(src) + 1);
+    if (dest != NULL)
+        strcpy(dest, src);
+    return dest;
+}
 
 /**
  * @brief Prints the path of a file if its size is over fileSizeLimit.
@@ -33,9 +50,12 @@ int printIfOverSize(const char *filePath, const int fileSizeLimit)
         return ERR_STAT;
     }
 
-    if (fileInfo.st_size > fileSizeLimit)
+    if (fileInfo.st_size > fileSizeLimit && (S_ISREG(fileInfo.st_mode) || S_ISLNK(fileInfo.st_mode)))
     {
-        printf("%s\n", filePath);
+        char *basec = custom_strdup(filePath);
+        char *bname = basename(basec);
+        printf("%s\n", bname);
+        free(basec);
     }
     return SUCCESS;
 }
