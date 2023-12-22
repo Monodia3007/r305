@@ -19,71 +19,58 @@
 #endif
 
 /**
- * @brief Affiche le chemin d'un fichier si sa taille est supérieure à une taille donnée.
+ * @brief Prints the path of a file if its size is over fileSizeLimit.
  *
- * @param[in] chemin Le chemin du fichier à vérifier.
- * @param[in] taille La taille maximale autorisée.
- *
- * @return 0 si la taille du fichier est inférieure ou égale à la taille donnée,
- *         -1 en cas d'erreur lors de la récupération des informations du fichier.
- *
- * Cette fonction utilise la fonction stat pour vérifier la taille du fichier
- * spécifié par le chemin donné. Si la taille du fichier est supérieure à la
- * taille donnée, le chemin du fichier est affiché sur la sortie standard.
+ * @return ERR_STAT (-1) if there is a failure in getting the file information.
+ *         SUCCESS (0) otherwise.
  */
-int afficher_fichier(const char *chemin, const int taille)
+int printIfOverSize(const char *filePath, const int fileSizeLimit)
 {
-    struct stat infos;
-    if (stat(chemin, &infos) == -1)
+    struct stat fileInfo;
+    if (stat(filePath, &fileInfo) == -1)
     {
-        perror(chemin);
-        return -1;
+        perror(filePath);
+        return ERR_STAT;
     }
 
-    if (infos.st_size > taille)
+    if (fileInfo.st_size > fileSizeLimit)
     {
-        printf("%s\n", chemin);
+        printf("%s\n", filePath);
     }
-    return 0;
+    return SUCCESS;
 }
 
 /**
  * @brief Display the files in a given directory
  *
- * This function takes a directory path and a maximum file size as input parameters.
- * It opens the directory using the opendir() function and reads each entry using the readdir() function.
- * For each entry, it constructs the full file path by concatenating the directory path and the entry name.
- * Then, it calls the afficher_fichier() function to display the file if its size is greater than the given maximum size.
- * Finally, it closes the directory using the closedir() function and returns 0 if successful, -1 otherwise.
- *
- * @param chemin The path to the directory
- * @param taille The maximum file size
- * @return int 0 if successful, -1 otherwise
+ * @return ERR_OPENDIR (-1) if opendir() fails to open the directory.
+ *         SUCCESS (0) otherwise.
  */
-int afficher_dossier(const char *chemin, const int taille)
+int checkDirFileSize(const char *dirPath, const int fileSizeLimit)
 {
-    DIR *rep = opendir(chemin);
-    if (rep == NULL)
+    DIR *dirHandle = opendir(dirPath);
+    if (dirHandle == NULL)
     {
-        perror(chemin);
-        return -1;
+        perror(dirPath);
+        return ERR_OPENDIR;
     }
 
-    struct dirent *entree;
+    struct dirent *entry;
 
-    while ((entree = readdir(rep)) != NULL)
+    while ((entry = readdir(dirHandle)) != NULL)
     {
-        char chemin_fichier[PATH_MAX];
-        snprintf(chemin_fichier, PATH_MAX, "%s/%s", chemin, entree->d_name);
+        char filePath[PATH_MAX];
+        snprintf(filePath, PATH_MAX, "%s/%s", dirPath, entry->d_name);
 
-        if (afficher_fichier(chemin_fichier, taille) == -1)
+        if (printIfOverSize(filePath, fileSizeLimit) == ERR_STAT)
         {
-            closedir(rep);
-            return -1;
+            closedir(dirHandle);
+            return ERR_OPENDIR;
         }
     }
-    closedir(rep);
-    return 0;
+
+    closedir(dirHandle);
+    return SUCCESS;
 }
 
 /**
@@ -103,7 +90,7 @@ int run_filtre(int const argc, char *argv[])
         return 1;
     }
 
-    afficher_dossier(argv[2], (int)strtol(argv[1], NULL, 10));
+    checkDirFileSize(argv[2], (int)strtol(argv[1], NULL, 10));
 
     return 0;
 }

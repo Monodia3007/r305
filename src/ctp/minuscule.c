@@ -17,12 +17,14 @@
  */
 char *minuscule(const char *chaine)
 {
-    char *result = malloc(sizeof(chaine));
+    size_t len = strlen(chaine);
+    char *result = malloc(len+1);  // allocate one extra byte for the null-terminator
 
-    for (int i = 0; i < (int)strlen(chaine); i++)
+    for (size_t i = 0; i < len; i++)
     {
         result[i] = tolower(chaine[i]);
     }
+    result[len] = '\0';  // null-terminate the result
 
     return result;
 }
@@ -39,7 +41,7 @@ char *minuscule(const char *chaine)
  */
 int run_minuscule(const int argc, const char *argv[])
 {
-    if (argc < 2) 
+    if (argc < 2)
     {
         fprintf(stderr, "Nombre d'argument invalide\nUsage : %s <string1> [string2] [string3] ...\n", argv[0]);
         return 1;

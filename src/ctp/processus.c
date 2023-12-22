@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <grp.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 #include "processus.h"
 
 /**
@@ -19,55 +19,67 @@
  */
 int run_processus(void)
 {
-    /// echo Bonjour ; sleep 10 ; xeyes & echo Fini
-    pid_t const pid_bonjour = fork();
+    pid_t pid_bonjour = fork();
 
     if (pid_bonjour < 0)
     {
         return 1;
     }
-    if (pid_bonjour == 0) 
+    if (pid_bonjour == 0)
     {
         execlp("echo", "echo", "Bonjour", NULL);
         perror("execlp");
+        _exit(EXIT_FAILURE);
     }
-    waitpid(pid_bonjour, NULL, 0);
-    
-    pid_t const pid_sleep = fork();
+
+    if(waitpid(pid_bonjour, NULL, 0) == -1){
+        perror("waitpid");
+        return 1;
+    }
+
+    pid_t pid_sleep = fork();
 
     if (pid_sleep < 0)
     {
         return 1;
     }
-    if (pid_sleep == 0) 
+    if (pid_sleep == 0)
     {
         execlp("sleep", "sleep", "10", NULL);
         perror("execlp");
+        _exit(EXIT_FAILURE);
     }
-    waitpid(pid_sleep, NULL, 0);
-    
-    pid_t const pid_xeyes = fork();
+
+    if(waitpid(pid_sleep, NULL, 0) == -1){
+        perror("waitpid");
+        return 1;
+    }
+
+    pid_t pid_xeyes = fork();
 
     if (pid_xeyes < 0)
     {
         return 1;
     }
-    if (pid_xeyes == 0) 
+    if (pid_xeyes == 0)
     {
         execlp("xeyes", "xeyes", NULL);
         perror("execlp");
+        _exit(EXIT_FAILURE);
     }
-    
-    pid_t const pid_fini = fork();
+
+    pid_t pid_fini = fork();
 
     if (pid_fini < 0)
     {
         return 1;
     }
-    if (pid_fini == 0) 
+    if (pid_fini == 0)
     {
         execlp("echo", "echo", "Fini", NULL);
         perror("execlp");
+        _exit(EXIT_FAILURE);
     }
+
     return 0;
 }
