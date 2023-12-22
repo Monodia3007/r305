@@ -9,6 +9,9 @@
 #include "tp6/encoder.h"
 #include "tp6/decoder.h"
 #include "tp6/modif_bmp.h"
+#include "ctp/filtre.h"
+#include "ctp/minuscule.h"
+#include "ctp/processus.h"
 
 /**
  * @file main.c
@@ -21,21 +24,25 @@ int main(int const argc, char *argv[])
     while (1)
     {
         static struct option long_options[] = {
-                {"infinite_malloc",            no_argument,       0, 'a'},
-                {"infinite_fork",              no_argument,       0, 'c'},
-                {"queue_and_stack_operations", no_argument,       0, 'd'},
-                {"archiver",                   required_argument, 0, 'e'},
-                {"unarchiver",                 required_argument, 0, 'f'},
-                {"ls",                         required_argument, 0, 'g'},
-                {"shell",                      no_argument,       0, 'h'},
-                {"encoder",                    optional_argument, 0, 'j'},
-                {"decoder",                    optional_argument, 0, 'k'},
-                {"modif_bmp",                  required_argument, 0, 'l'},
-                {0, 0,                                            0, 0}
+                {"infinite_malloc", no_argument, 0, 'a'},
+                {"infinite_fork", no_argument, 0, 'c'},
+                {"queue_and_stack_operations", no_argument, 0, 'd'},
+                {"archiver", required_argument, 0, 'e'},
+                {"unarchiver", required_argument, 0, 'f'},
+                {"ls", required_argument, 0, 'g'},
+                {"shell", no_argument, 0, 'h'},
+                {"encoder", optional_argument, 0, 'j'},
+                {"decoder", optional_argument, 0, 'k'},
+                {"modif_bmp", required_argument, 0, 'l'},
+                {"filtre", required_argument, 0, 'm'},
+                {"minuscule", required_argument, 0, 'o'},
+                {"processus", no_argument, 0, 'p'},
+                {"help", no_argument, 0, '?'},
+                {0, 0, 0, 0}
         };
 
         int option_index = 0;
-        c = getopt_long(argc, argv, "acdefghjkl:?", long_options, &option_index);
+        c = getopt_long(argc, argv, "acdefghjklmop:?", long_options, &option_index);
         if (c == -1)
             break;
 
@@ -78,6 +85,37 @@ int main(int const argc, char *argv[])
 
             case 'l':
                 run_modif_bmp(argc - 1, argv + 1);
+                break;
+
+            case 'm':
+                run_filtre(argc - 1, argv + 1);
+                break;
+
+            case 'o':
+                run_minuscule(argc - 1, (const char **) (argv + 1));
+                break;
+
+            case 'p':
+                run_processus();
+                break;
+
+            case '?':
+                printf("Usage: %s [OPTION]...\n", argv[0]);
+                printf("Options:\n");
+                printf("\t--infinite_malloc\n");
+                printf("\t--infinite_fork\n");
+                printf("\t--queue_and_stack_operations\n");
+                printf("\t--archiver\n");
+                printf("\t--unarchiver\n");
+                printf("\t--ls\n");
+                printf("\t--shell\n");
+                printf("\t--encoder\n");
+                printf("\t--decoder\n");
+                printf("\t--modif_bmp\n");
+                printf("\t--filtre\n");
+                printf("\t--minuscule\n");
+                printf("\t--processus\n");
+                printf("\t--help\n");
                 break;
 
             default:

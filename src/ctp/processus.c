@@ -1,14 +1,23 @@
 #include <stdio.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <grp.h>
-#include <pwd.h>
 #include <sys/wait.h>
-#include <inttypes.h>
+#include "processus.h"
 
-int main(void)
+/**
+ * @brief Runs a series of processes in sequence.
+ *
+ * This function forks multiple child processes and uses `execlp` to execute
+ * different commands in each child process. The commands executed are:
+ * 1. `echo Bonjour`
+ * 2. `sleep 10`
+ * 3. `xeyes`
+ * 4. `echo Fini`
+ * The parent process waits for each child process to complete using `waitpid`.
+ *
+ * @return 0 on success, 1 on failure
+ */
+int run_processus(void)
 {
     /// echo Bonjour ; sleep 10 ; xeyes & echo Fini
     pid_t const pid_bonjour = fork();
