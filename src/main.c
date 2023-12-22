@@ -102,20 +102,20 @@ int main(int const argc, char *argv[])
             case '?':
                 printf("Usage: %s [OPTION]...\n", argv[0]);
                 printf("Options:\n");
-                printf("\t--infinite_malloc\n");
-                printf("\t--infinite_fork\n");
-                printf("\t--queue_and_stack_operations\n");
-                printf("\t--archiver\n");
-                printf("\t--unarchiver\n");
-                printf("\t--ls\n");
-                printf("\t--shell\n");
-                printf("\t--encoder\n");
-                printf("\t--decoder\n");
-                printf("\t--modif_bmp\n");
-                printf("\t--filtre\n");
-                printf("\t--minuscule\n");
-                printf("\t--processus\n");
-                printf("\t--help\n");
+                printf("%30s\tDeploys an infinite memory allocation operation\n", "--infinite_malloc");
+                printf("%30s\tDeploys an infinite thread forking operation\n", "--infinite_fork");
+                printf("%30s\tExercises queue and stack operations\n", "--queue_and_stack_operations");
+                printf("%30s\tArchives files or directories\n", "--archiver");
+                printf("%30s\tExtracts files or directories from an archive\n", "--unarchiver");
+                printf("%30s\tLists the directory contents\n", "--ls");
+                printf("%30s\tOpens an internal shell for command execution\n", "--shell");
+                printf("%30s\tEncodes provided data\n", "--encoder");
+                printf("%30s\tDecodes previously encoded data\n", "--decoder");
+                printf("%30s\tModifies a bmp image file\n", "--modif_bmp");
+                printf("%30s\tApplies a filter to data\n", "--filtre");
+                printf("%30s\tConverts input to lowercase\n", "--minuscule");
+                printf("%30s\tDeploys a process operation\n", "--processus");
+                printf("%30s\tDisplays this help text\n", "--help");
                 break;
 
             default:
