@@ -5,7 +5,8 @@
 #ifndef R305_FILTRE_H
 #define R305_FILTRE_H
 
-typedef enum {
+typedef enum
+{
     SUCCESS = 0,
     ERR_STAT = -1,
     ERR_OPENDIR = -1,

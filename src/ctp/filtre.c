@@ -8,7 +8,9 @@
 
 
 #if defined(__linux__)
+
 #include <linux/limits.h>
+
 #elif defined(__APPLE__)
 #include <sys/syslimits.h>
 #else
@@ -28,8 +30,9 @@
  *
  * @return The newly allocated duplicate of the source string, or NULL if the memory allocation failed.
  */
-char* custom_strdup(const char* src) {
-    char* dest = malloc(strlen(src) + 1);
+char *custom_strdup(const char *src)
+{
+    char *dest = malloc(strlen(src) + 1);
     if (dest != NULL)
         strcpy(dest, src);
     return dest;
@@ -105,12 +108,13 @@ int checkDirFileSize(const char *dirPath, const int fileSizeLimit)
  */
 int run_filtre(int const argc, char *argv[])
 {
-    if (argc != 3) {
+    if (argc != 3)
+    {
         fprintf(stderr, "Nombre d'argument invalide\nUsage : %s <taille> <répertoire>\n", argv[0]);
         return 1;
     }
 
-    checkDirFileSize(argv[2], (int)strtol(argv[1], NULL, 10));
+    checkDirFileSize(argv[2], (int) strtol(argv[1], NULL, 10));
 
     return 0;
 }

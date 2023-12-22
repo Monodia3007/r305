@@ -18,7 +18,7 @@
 char *minuscule(const char *chaine)
 {
     size_t len = strlen(chaine);
-    char *result = malloc(len+1);  // allocate one extra byte for the null-terminator
+    char *result = malloc(len + 1);  // allocate one extra byte for the null-terminator
 
     for (size_t i = 0; i < len; i++)
     {
