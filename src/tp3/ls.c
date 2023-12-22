@@ -17,7 +17,9 @@
 #include <inttypes.h>
 
 #if defined(__linux__)
+
 #include <linux/limits.h>
+
 #elif defined(__APPLE__)
 
 #include <sys/syslimits.h>

@@ -8,6 +8,23 @@
 #include <stdio.h>
 #include "modif_bmp.h"
 
+/**
+ * @brief Reads two bytes from a file descriptor and stores them in a uint16_t variable.
+ *
+ * This function reads two bytes from the file descriptor specified by `fd` and stores the
+ * result in the memory pointed by `val`. The file descriptor should be opened in read mode.
+ * The number of bytes read is returned.
+ *
+ * @param[in] fd The file descriptor to read from.
+ * @param[out] val A pointer to the variable where the result will be stored.
+ *
+ * @return The number of bytes read.
+ *         - If the return value is greater than 0, it means two bytes were read successfully.
+ *         - If the return value is 0, it means the end of file has been reached.
+ *         - If the return value is -1, it means an error occurred while reading.
+ *
+ * @note This function assumes that the memory pointed by `val` has enough space to store two bytes.
+ */
 int lire_deux_octets(int fd, uint16_t *val)
 {
     int result = read(fd, val, sizeof(*val));
@@ -24,6 +41,19 @@ int lire_deux_octets(int fd, uint16_t *val)
     }
 }
 
+/**
+ * @brief Read four bytes from a file descriptor and store them in a uint32_t variable.
+ *
+ * This function reads four bytes from the file referred to by the file descriptor `fd` and stores them in the variable pointed to by `val`.
+ * The number of bytes read is returned as follows:
+ *   - If successful, the function returns sizeof(uint32_t) (i.e., 4).
+ *   - If an error occurs, the function returns -1.
+ *   - If the end of the file is reached, the function returns 0.
+ *
+ * @param fd The file descriptor of the file to read from.
+ * @param val Pointer to the variable where the four bytes will be stored.
+ * @return The number of bytes read, -1 if an error occurs, or 0 if the end of the file is reached.
+ */
 int lire_quatre_octets(int fd, uint32_t *val)
 {
     int result = read(fd, val, sizeof(*val));
@@ -40,6 +70,15 @@ int lire_quatre_octets(int fd, uint32_t *val)
     }
 }
 
+/**
+ * @brief Reads the header information from a BMP file.
+ *
+ * This function reads the header information from a BMP file using the provided file descriptor and stores it in the given entete_bmp structure.
+ *
+ * @param fd The file descriptor of the BMP file.
+ * @param entete Pointer to the entete_bmp structure where the header information will be stored.
+ * @return 0 if the header information is successfully read, -1 if any reading operation fails.
+ */
 int lire_entete(int fd, entete_bmp *entete)
 {
     if (lire_deux_octets(fd, &entete->fichier.signature) != sizeof(entete->fichier.signature)
@@ -66,6 +105,17 @@ int lire_entete(int fd, entete_bmp *entete)
     return 0;
 }
 
+/**
+ * @brief Writes a 16-bit value to a file descriptor.
+ *
+ * This function writes a 16-bit value `val` to the file descriptor `fd`. It uses the `write` system call
+ * to write the value as a sequence of 2 bytes.
+ *
+ * @param fd The file descriptor to write to.
+ * @param val The value to write.
+ *
+ * @return On success, the number of bytes written (`sizeof(val)`). On failure, -1 is returned.
+ */
 int ecrire_deux_octets(int fd, uint16_t val)
 {
     ssize_t result = write(fd, &val, sizeof(val));
@@ -79,6 +129,16 @@ int ecrire_deux_octets(int fd, uint16_t val)
     }
 }
 
+/**
+ * @brief Writes four bytes to a file descriptor.
+ *
+ * This function writes a 32-bit value to a file descriptor. The value is passed by reference
+ * and its bytes are written to the file descriptor in their order of significance (most significant byte first).
+ *
+ * @param fd The file descriptor to write to.
+ * @param val The 32-bit value to write.
+ * @return The number of bytes written if successful, -1 if there was an error.
+ */
 int ecrire_quatre_octets(int fd, uint32_t val)
 {
     ssize_t result = write(fd, &val, sizeof(val));
@@ -92,6 +152,17 @@ int ecrire_quatre_octets(int fd, uint32_t val)
     }
 }
 
+/**
+ * @brief Writes the contents of the given entete_bmp structure to the specified file descriptor.
+ *
+ * This function writes the contents of the entete_bmp structure to the specified file descriptor
+ * by calling the helper functions ecrire_deux_octets and ecrire_quatre_octets. If any writing operation
+ * fails, the function returns -1. Otherwise, it returns 0 to indicate success.
+ *
+ * @param fd The file descriptor to write to
+ * @param entete Pointer to the entete_bmp structure containing the data to be written
+ * @return 0 on success, -1 on failure
+ */
 int ecrire_entete(int fd, entete_bmp *entete)
 {
     if (ecrire_deux_octets(fd, entete->fichier.signature) == -1
@@ -117,6 +188,16 @@ int ecrire_entete(int fd, entete_bmp *entete)
     return 0;
 }
 
+/**
+ * @brief Verifies if the image depth is 24 bits.
+ *
+ * This function takes a pointer to an entete_bmp structure as input and
+ * checks if the depth of the image, stored in its bitmap field, is equal to
+ * 24 bits. If the depth is 24 bits, it returns 1; otherwise, it returns 0.
+ *
+ * @param entete Pointer to the entete_bmp structure to be verified.
+ * @return 1 if the depth is 24 bits, 0 otherwise.
+ */
 int verifier_entete(const entete_bmp *entete)
 {
     // verify the image depth is 24 bits
@@ -129,6 +210,15 @@ int verifier_entete(const entete_bmp *entete)
     }
 }
 
+/**
+ * @brief Allocates memory for storing pixel data.
+ *
+ * This function allocates a memory block to store pixel data for a BMP image. The size of the memory block is calculated using the size of the image data in the given bitmap header
+*.
+ *
+ * @param entete The header of the BMP image.
+ * @return A pointer to the allocated memory block. Returns NULL if memory allocation failed.
+ */
 unsigned char *allouer_pixels(entete_bmp *entete)
 {
     // With BMP pixel data, each pixel requires 3 bytes (24 bits for red, green, and blue)
@@ -136,6 +226,17 @@ unsigned char *allouer_pixels(entete_bmp *entete)
     return pixels;  // return the allocated array
 }
 
+/**
+ * @brief Reads the pixel data from a file descriptor into an array.
+ *
+ * This function moves the file cursor to the position where the pixel data begins,
+ * then reads the pixel data into the provided array.
+ *
+ * @param fd The file descriptor of the file to read from.
+ * @param entete A pointer to the entete_bmp structure holding the file headers.
+ * @param pixels A pointer to the array where the pixel data will be stored.
+ * @return 0 on success, -1 on failure.
+ */
 int lire_pixels(int fd, entete_bmp *entete, unsigned char *pixels)
 {
     // move the file cursor to the position where the pixel data begins
@@ -151,6 +252,18 @@ int lire_pixels(int fd, entete_bmp *entete, unsigned char *pixels)
     return 0;
 }
 
+/**
+ * @brief Writes pixel data to a file descriptor.
+ *
+ * This function moves the file cursor to the position where the pixel data begins
+ * and writes the pixel data from the pixels array. It returns -1 if failed to write,
+ * otherwise it returns 0.
+ *
+ * @param fd The file descriptor of the file to write the pixel data.
+ * @param entete Pointer to the entete_bmp structure containing file and bitmap headers.
+ * @param pixels Pointer to the array of pixel data.
+ * @return If failed to write, returns -1. Otherwise, returns 0.
+ */
 int ecrire_pixels(int fd, entete_bmp *entete, unsigned char *pixels)
 {
     // move the file cursor to the position where the pixel data begins
@@ -166,6 +279,19 @@ int ecrire_pixels(int fd, entete_bmp *entete, unsigned char *pixels)
     return 0;
 }
 
+/**
+* @brief Sets the blue and green channels of the image pixels to 0, leaving the red channel unmodified.
+*
+* This function modifies the provided image pixels by setting the blue and green color channels of each pixel to 0,
+* while leaving the red channel unmodified. The function calculates the line padding based on the image width and
+* applies the color modifications for each pixel in the image.
+*
+* @param entete A pointer to the entete_bmp structure that contains information about the image.
+* @param pixels A pointer to the image pixels.
+*
+* @note The function assumes that the image is in 24-bit RGB format, where pixels are stored consecutively in a 1D array.
+* Each pixel is represented by 3 bytes, with the channel order of Blue, Green, and Red.
+*/
 void rouge(entete_bmp *entete, unsigned char *pixels)
 {
     uint32_t padding = (4 - (entete->bitmap.largeur * 3) % 4) % 4; // line padding calculation
@@ -182,6 +308,16 @@ void rouge(entete_bmp *entete, unsigned char *pixels)
     }
 }
 
+/**
+ * @brief Inverts the color of each pixel in the given BMP image data.
+ *
+ * This function takes an entete_bmp structure containing the BMP image header
+ * and an array of image pixels and inverts the color of each pixel by
+ * bitwise negation.
+ *
+ * @param entete A pointer to the entete_bmp structure representing the BMP image header.
+ * @param pixels A pointer to the array of image pixels.
+ */
 void negatif(entete_bmp *entete, unsigned char *pixels)
 {
     uint32_t padding = (4 - (entete->bitmap.largeur * 3) % 4) % 4; // line padding
@@ -198,6 +334,16 @@ void negatif(entete_bmp *entete, unsigned char *pixels)
     }
 }
 
+/**
+ * @brief Convert an image to black and white.
+ *
+ * This function takes the header and pixel data of a bitmap image and converts
+ * the image to black and white. It calculates the average value of the RGB
+ * components of each pixel and sets all three components to that average value.
+ *
+ * @param entete A pointer to the entete_bmp structure containing the header information of the bitmap image.
+ * @param pixels A pointer to the pixel data of the bitmap image.
+ */
 void noir_et_blanc(entete_bmp *entete, unsigned char *pixels)
 {
     uint32_t padding = (4 - (entete->bitmap.largeur * 3) % 4) % 4; // line padding
@@ -213,6 +359,21 @@ void noir_et_blanc(entete_bmp *entete, unsigned char *pixels)
     }
 }
 
+/**
+ * @brief Splits the given bitmap image into two halves and updates the header accordingly.
+ *
+ * @param entete Pointer to the header of the bitmap image.
+ * @param pixels Pointer to the pixel data of the bitmap image.
+ * @param sup Indicator whether to copy the upper half of the image.
+ *
+ * This function splits the given bitmap image into two halves - either the upper half or the lower half.
+ * It calculates the padding required for each row of pixels, allocates memory for the new image,
+ * and copies the appropriate half of the image to the new memory space.
+ * It then updates the header to reflect the new image height, and finally copies the new pixels back to the original pixel array
+ * and frees the memory allocated for the new image.
+ *
+ * @note The original pixel data (passed to the function) will be modified.
+ */
 void moitie(entete_bmp *entete, unsigned char *pixels, int sup)
 {
     uint32_t padding = (4 - (entete->bitmap.largeur * 3) % 4) % 4; // calculer le padding
@@ -252,6 +413,13 @@ void moitie(entete_bmp *entete, unsigned char *pixels, int sup)
     free(newPixels); // libérer la mémoire allouée pour les nouveaux pixels
 }
 
+/**
+ * @brief This function modifies a BMP file based on the specified operations.
+ *
+ * @param argc The number of command-line arguments.
+ * @param argv An array of command-line arguments.
+ * @return int Returns 0 if the BMP file was modified successfully, -1 otherwise.
+ */
 int run_modif_bmp(int argc, char *argv[])
 {
     if (argc < 2)
