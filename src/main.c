@@ -21,17 +21,17 @@ int main(int const argc, char *argv[])
     while (1)
     {
         static struct option long_options[] = {
-                {"infinite_malloc", no_argument, 0, 'a'},
-                {"infinite_fork", no_argument, 0, 'c'},
-                {"queue_and_stack_operations", no_argument, 0, 'd'},
-                {"archiver", required_argument, 0, 'e'},
-                {"unarchiver", required_argument, 0, 'f'},
-                {"ls", required_argument, 0, 'g'},
-                {"shell", no_argument, 0, 'h'},
-                {"encoder", optional_argument, 0, 'j'},
-                {"decoder", optional_argument, 0, 'k'},
-                {"modif_bmp", required_argument, 0, 'l'},
-                {0, 0, 0, 0}
+                {"infinite_malloc",            no_argument,       0, 'a'},
+                {"infinite_fork",              no_argument,       0, 'c'},
+                {"queue_and_stack_operations", no_argument,       0, 'd'},
+                {"archiver",                   required_argument, 0, 'e'},
+                {"unarchiver",                 required_argument, 0, 'f'},
+                {"ls",                         required_argument, 0, 'g'},
+                {"shell",                      no_argument,       0, 'h'},
+                {"encoder",                    optional_argument, 0, 'j'},
+                {"decoder",                    optional_argument, 0, 'k'},
+                {"modif_bmp",                  required_argument, 0, 'l'},
+                {0, 0,                                            0, 0}
         };
 
         int option_index = 0;
