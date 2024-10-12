@@ -19,6 +19,7 @@
  */
 int run_processus(void)
 {
+    ///echo Bonjour; sleep 10; xeyes & echo Fini
     pid_t pid_bonjour = fork();
 
     if (pid_bonjour < 0)

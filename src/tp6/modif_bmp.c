@@ -213,8 +213,8 @@ int verifier_entete(const entete_bmp *entete)
 /**
  * @brief Allocates memory for storing pixel data.
  *
- * This function allocates a memory block to store pixel data for a BMP image. The size of the memory block is calculated using the size of the image data in the given bitmap header
-*.
+ * This function allocates a memory block to store pixel data for a BMP image. The size of the memory block is
+ * calculated using the size of the image data in the given bitmap header.
  *
  * @param entete The header of the BMP image.
  * @return A pointer to the allocated memory block. Returns NULL if memory allocation failed.
