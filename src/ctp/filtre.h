@@ -16,8 +16,8 @@ typedef enum
 /**
  * @brief Afficher le nom d'un fichier si sa taille est supérieure à une valeur donnée.
  *
- * @param chemin Le chemin du fichier à afficher.
- * @param taille La taille minimale du fichier pour être affiché.
+ * @param filePath Le chemin du fichier à afficher.
+ * @param fileSizeLimit La taille minimale du fichier pour être affiché.
  * @return 0 si le fichier a été affiché avec succès, -1 sinon.
  */
 int printIfOverSize(const char *filePath, int fileSizeLimit);
@@ -27,8 +27,8 @@ int printIfOverSize(const char *filePath, int fileSizeLimit);
  *
  * This function displays the names of the files in the given directory that have a size greater than the specified value.
  *
- * @param chemin The path of the directory to be displayed.
- * @param taille The minimum size of the files to be displayed.
+ * @param dirPath The path of the directory to be displayed.
+ * @param fileSizeLimit The minimum size of the files to be displayed.
  * @return 0 on success, -1 on error.
  */
 int checkDirFileSize(const char *dirPath, int fileSizeLimit);
